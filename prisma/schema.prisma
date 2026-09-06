@@ -1,0 +1,90 @@
+// NUSA LEARN - Educational game database schema
+// Targets: elementary students grades 1-6, numerik + literasi
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// QUESTION BANK - extensible content for all grades/subjects
+// ============================================================
+model Question {
+  id          String   @id // e.g. "NUM-G1-001"
+  grade       Int      // 1-6
+  category    String   // "numerik" | "literasi"
+  subcategory String   // e.g. "penjumlahan", "ide_pokok"
+  difficulty  String   // "easy" | "medium" | "hard"
+  gameType    String   // "choice" | "story" | "pattern" | "match" | "build"
+  question    String   // main question text
+  story       String?  // optional story/context (for literasi)
+  highlight   String?  // optional highlighted keywords (JSON array)
+  options     String   // JSON array of options
+  answer      String   // correct answer (matches one of options, or for pattern)
+  explanation String   // why the answer is correct
+  hints       String   // JSON array of progressive hints (3 tiers)
+  xpReward    Int      @default(20)
+  createdAt   DateTime @default(now())
+
+  @@index([grade, category, subcategory])
+  @@index([category, difficulty])
+}
+
+// ============================================================
+// PLAYER - one row per local learner (no auth, kid-friendly)
+// ============================================================
+model Player {
+  id              String   @id @default(cuid())
+  name            String
+  grade           Int      @default(1) // 1-6
+  level           Int      @default(1) // explorer rank 1-5
+  xp              Int      @default(0)
+  coins           Int      @default(50)
+  stars           Int      @default(0)
+  characterJson   String   @default("{}") // customization JSON
+  settingsJson    String   @default("{\"sound\":true,\"music\":true,\"animations\":true}")
+  unlockedAreas   String   @default("[\"number_city\",\"literacy_forest\"]") // JSON array
+  completedLevels String   @default("[]") // JSON array of level keys
+  skillProgress   String   @default("{}") // JSON: { numerik: {penjumlahan: 80, ...}, literasi: {...} }
+  badges          String   @default("[]") // JSON array of badge ids
+  statsJson       String   @default("{\"totalPlayed\":0,\"correct\":0,\"wrong\":0,\"streak\":0,\"bestStreak\":0}")
+  lastDailyDate   String?  // YYYY-MM-DD
+  dailyStreak     Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ============================================================
+// BADGE - achievement definitions (also seeded locally)
+// ============================================================
+model Badge {
+  id          String @id // e.g. "math_explorer"
+  name        String
+  description String
+  icon        String // emoji
+  category    String // "numerik" | "literasi" | "general"
+  requirement String // human readable
+  createdAt    DateTime @default(now())
+}
+
+// ============================================================
+// SESSION LOG - lightweight learning analytics
+// ============================================================
+model SessionLog {
+  id         String   @id @default(cuid())
+  playerName String
+  grade      Int
+  area       String   // world area
+  level      String   // level key
+  category   String   // numerik | literasi
+  correct    Int      @default(0)
+  wrong      Int      @default(0)
+  xpGained   Int      @default(0)
+  starsGained Int     @default(0)
+  duration   Int      @default(0) // seconds
+  createdAt  DateTime @default(now())
+}
