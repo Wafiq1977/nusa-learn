@@ -227,6 +227,55 @@
   .reduce-motion .animate-pulse-glow {
     animation: none !important;
   }
+
+  /* TV/PED mode — large display scaling for school TVs & projectors */
+  .tv-mode {
+    font-size: 1.15rem;
+  }
+  .tv-mode .text-xs { font-size: 0.9rem !important; }
+  .tv-mode .text-sm { font-size: 1.1rem !important; }
+  .tv-mode .text-base { font-size: 1.35rem !important; }
+  .tv-mode .text-lg { font-size: 1.6rem !important; }
+  .tv-mode .text-xl { font-size: 1.85rem !important; }
+  .tv-mode .text-2xl { font-size: 2.2rem !important; }
+  .tv-mode .text-3xl { font-size: 2.6rem !important; }
+  .tv-mode .text-4xl { font-size: 3rem !important; }
+  .tv-mode .text-5xl { font-size: 3.8rem !important; }
+  .tv-mode .text-6xl { font-size: 4.5rem !important; }
+  .tv-mode .text-7xl { font-size: 5.5rem !important; }
+  .tv-mode .text-8xl { font-size: 6.5rem !important; }
+
+  /* Larger touch targets */
+  .tv-mode button,
+  .tv-mode [role="button"] {
+    min-height: 56px;
+  }
+  .tv-mode .min-h-9 { min-height: 48px; }
+  .tv-mode .min-h-11 { min-height: 56px; }
+  .tv-mode .min-h-12 { min-height: 64px; }
+  .tv-mode .min-h-14 { min-height: 80px; }
+  .tv-mode .h-12 { height: 64px; }
+  .tv-mode .h-14 { height: 80px; }
+  .tv-mode .h-16 { height: 96px; }
+
+  /* Larger padding for cards */
+  .tv-mode .p-3 { padding: 1rem; }
+  .tv-mode .p-4 { padding: 1.5rem; }
+  .tv-mode .p-5 { padding: 2rem; }
+  .tv-mode .p-6 { padding: 2.5rem; }
+
+  /* Larger gaps */
+  .tv-mode .gap-2 { gap: 0.75rem; }
+  .tv-mode .gap-3 { gap: 1rem; }
+  .tv-mode .gap-4 { gap: 1.5rem; }
+
+  /* Larger border radius for big displays */
+  .tv-mode .rounded-2xl { border-radius: 1.5rem; }
+  .tv-mode .rounded-3xl { border-radius: 2rem; }
+
+  /* HUD pill larger in TV mode */
+  .tv-mode .text-\[10px\] { font-size: 0.85rem !important; }
+  .tv-mode .text-\[11px\] { font-size: 0.95rem !important; }
 }
 
 @keyframes nusa-float {
@@ -255,3 +304,50 @@
   90% { opacity: 0.6; }
   100% { transform: translateY(-10vh) translateX(20px) scale(1); opacity: 0; }
 }
+
+/* ============================================================
+   TV/PED Mode — outside @layer to ensure highest specificity
+   Applied to <html> element via documentElement.classList
+   ============================================================ */
+html.tv-mode {
+  font-size: 1.15rem;
+}
+html.tv-mode .text-xs { font-size: 0.9rem !important; }
+html.tv-mode .text-sm { font-size: 1.1rem !important; }
+html.tv-mode .text-base { font-size: 1.35rem !important; }
+html.tv-mode .text-lg { font-size: 1.6rem !important; }
+html.tv-mode .text-xl { font-size: 1.85rem !important; }
+html.tv-mode .text-2xl { font-size: 2.2rem !important; }
+html.tv-mode .text-3xl { font-size: 2.6rem !important; }
+html.tv-mode .text-4xl { font-size: 3rem !important; }
+html.tv-mode .text-5xl { font-size: 3.8rem !important; }
+html.tv-mode .text-6xl { font-size: 4.5rem !important; }
+html.tv-mode .text-7xl { font-size: 5.5rem !important; }
+html.tv-mode .text-8xl { font-size: 6.5rem !important; }
+
+/* Larger touch targets in TV mode */
+html.tv-mode button,
+html.tv-mode [role="button"] {
+  min-height: 56px;
+}
+html.tv-mode .min-h-9 { min-height: 48px; }
+html.tv-mode .min-h-11 { min-height: 56px; }
+html.tv-mode .min-h-12 { min-height: 64px; }
+html.tv-mode .min-h-14 { min-height: 80px; }
+
+/* Larger padding & gaps */
+html.tv-mode .p-3 { padding: 1rem; }
+html.tv-mode .p-4 { padding: 1.5rem; }
+html.tv-mode .p-5 { padding: 2rem; }
+html.tv-mode .p-6 { padding: 2.5rem; }
+html.tv-mode .gap-2 { gap: 0.75rem; }
+html.tv-mode .gap-3 { gap: 1rem; }
+html.tv-mode .gap-4 { gap: 1.5rem; }
+
+/* Larger border radius */
+html.tv-mode .rounded-2xl { border-radius: 1.5rem; }
+html.tv-mode .rounded-3xl { border-radius: 2rem; }
+
+/* HUD pill & tiny text in TV mode */
+html.tv-mode .text-\[10px\] { font-size: 0.85rem !important; }
+html.tv-mode .text-\[11px\] { font-size: 0.95rem !important; }

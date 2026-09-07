@@ -8,7 +8,7 @@ import { NovaMascot } from '@/components/nusa/NovaMascot'
 import { playSound, setSoundEnabled } from '@/lib/nusa/sound'
 import { TRACKS, playMusic, stopMusic, unlockAudio, isMusicPlaying, getCurrentTrackId } from '@/lib/nusa/music'
 import { useEffect, useState } from 'react'
-import { Volume2, VolumeX, Music, Music2, Sparkles, Zap, Type } from 'lucide-react'
+import { Volume2, VolumeX, Music, Music2, Sparkles, Zap, Type, Tv } from 'lucide-react'
 
 export function SettingsScreen() {
   const settings = useGameStore((s) => s.settings)
@@ -130,6 +130,13 @@ export function SettingsScreen() {
             desc="Untuk perangkat lambat atau sensitif gerakan"
             value={settings.reduceMotion}
             onToggle={(v) => updateSettings({ reduceMotion: v })}
+          />
+          <ToggleRow
+            icon={<Tv className="h-5 w-5" />}
+            label="📺 Mode TV / PED"
+            desc="Tampilan besar untuk proyektor atau layar sekolah. Font & tombol lebih besar."
+            value={settings.tvMode}
+            onToggle={(v) => updateSettings({ tvMode: v, textScale: v ? 'large' : 'normal' })}
           />
         </div>
 

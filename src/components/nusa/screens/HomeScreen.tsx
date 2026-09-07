@@ -7,7 +7,7 @@ import { GlowButton } from '@/components/nusa/GlowButton'
 import { NovaMascot } from '@/components/nusa/NovaMascot'
 import { CharacterAvatar } from './OnboardingScreen'
 import { playSound } from '@/lib/nusa/sound'
-import { Compass, Calendar, BarChart3, Trophy, User, Zap, ChevronRight, Star, Sparkles, Gamepad2 } from 'lucide-react'
+import { Compass, Calendar, BarChart3, Trophy, User, Zap, ChevronRight, Star, Sparkles, Gamepad2, Shield } from 'lucide-react'
 
 export function HomeScreen() {
   const name = useGameStore((s) => s.name)
@@ -200,6 +200,17 @@ export function HomeScreen() {
             setView('arcade')
           }}
           delay={0.55}
+        />
+        <MenuCard
+          icon={<Shield className="h-6 w-6" />}
+          title="Admin"
+          subtitle="Kelola soal & monitor"
+          glow="cyan"
+          onClick={() => {
+            if (soundOn) playSound('whoosh')
+            setView('admin')
+          }}
+          delay={0.6}
         />
       </motion.div>
 

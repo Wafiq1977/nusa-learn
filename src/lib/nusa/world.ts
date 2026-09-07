@@ -21,7 +21,7 @@ export interface LevelDef {
   subtitle: string
   brief: string
   order: number
-  gameType: 'choice' | 'story' | 'pattern' | 'match' | 'build' | 'catch' | 'shop' | 'path' | 'battle'
+  gameType: 'choice' | 'story' | 'pattern' | 'match' | 'build' | 'catch' | 'shop' | 'path' | 'battle' | 'team_battle'
   subcategory?: string
   difficulty: 'easy' | 'medium' | 'hard'
   questionCount: number
@@ -145,7 +145,7 @@ export const LEVELS: LevelDef[] = [
   // Challenge Arena
   { id: 'ca-1', areaId: 'challenge_arena', name: 'Tantangan 1 — Hitung Cepat', subtitle: 'Soal cerita', brief: 'Selesaikan 5 soal cerita secepat mungkin.', order: 1, gameType: 'shop', subcategory: 'soal_cerita', difficulty: 'hard', questionCount: 5, emoji: '⚡' },
   { id: 'ca-2', areaId: 'challenge_arena', name: 'Tantangan 2 — Teka-teki Perbandingan', subtitle: 'Perbandingan', brief: 'Hadapi teka-teki perbandingan tingkat tinggi.', order: 2, gameType: 'battle', subcategory: 'perbandingan', difficulty: 'hard', questionCount: 5, emoji: '🎯' },
-  { id: 'ca-3', areaId: 'challenge_arena', name: 'Tantangan 3 — Pemikir Ultimate', subtitle: 'Campuran', brief: 'Tantangan akhir untuk para Master Explorer!', order: 3, gameType: 'catch', difficulty: 'hard', questionCount: 7, emoji: '👑', isBoss: true },
+  { id: 'ca-3', areaId: 'challenge_arena', name: 'Tantangan 3 — Pertarungan Kelompok Akhir', subtitle: 'Tim Merah vs Tim Biru', brief: 'Pertarungan kelompok terakhir! Cepat-cepatan jawab untuk menyerang tim musuh. Buktikan Tim Merah juara!', order: 3, gameType: 'team_battle', difficulty: 'hard', questionCount: 5, emoji: '⚔️', isBoss: true },
 ]
 
 export function getArea(id: string): AreaDef | undefined {

@@ -37,12 +37,15 @@ export function GameShell({
   const stars = useGameStore((s) => s.stars)
   const rank = getRankFromXp(xp)
   const soundOn = useGameStore((s) => s.settings.sound)
+  const tvMode = useGameStore((s) => s.settings.tvMode)
 
   useEffect(() => {
     // Apply reduce-motion class globally
     const reduce = useGameStore.getState().settings.reduceMotion || !useGameStore.getState().settings.animations
     document.documentElement.classList.toggle('reduce-motion', reduce)
-  }, [])
+    // Apply TV mode class globally
+    document.documentElement.classList.toggle('tv-mode', useGameStore.getState().settings.tvMode)
+  }, [tvMode])
 
   return (
     <div

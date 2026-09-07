@@ -14,6 +14,7 @@ import { CatchGame } from '@/components/nusa/games/CatchGame'
 import { ShopGame } from '@/components/nusa/games/ShopGame'
 import { PathGame } from '@/components/nusa/games/PathGame'
 import { BattleGame } from '@/components/nusa/games/BattleGame'
+import { TeamBattleGame } from '@/components/nusa/games/TeamBattleGame'
 
 export function NovaHintBubble({
   hint,
@@ -535,6 +536,8 @@ export function GameScreen() {
         return <PathGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'battle':
         return <BattleGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
+      case 'team_battle':
+        return <TeamBattleGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'choice':
       default:
         return <ChoiceGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
@@ -584,7 +587,7 @@ export function GameScreen() {
 
         {/* Feedback overlay (hidden for animated games with their own feedback) */}
         <AnimatePresence>
-          {feedback && !['catch', 'shop', 'path', 'battle'].includes(gameType) && (
+          {feedback && !['catch', 'shop', 'path', 'battle', 'team_battle'].includes(gameType) && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}

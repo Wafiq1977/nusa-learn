@@ -116,3 +116,60 @@ Stage Summary:
 - All 4 new mini-games integrated into existing level progression across all 6 areas
 - New Arcade hub screen for direct mini-game access (8 games total)
 - Total mini-games now: 8 (choice, story, pattern, build, catch, shop, path, battle) — exceeds spec requirements of 3+ mini-games
+
+---
+Task ID: 4
+Agent: main
+Task: Add team battle game (left/right group race), responsive TV/PED mode, and admin menu (CRUD soal + monitoring)
+
+Work Log:
+- Added 'admin' view and 'team_battle' gameType to gameStore; added 'tvMode' boolean to Settings
+- Built TeamBattleGame (`src/components/nusa/games/TeamBattleGame.tsx`):
+  - Tim Merah (left, player) vs Tim Biru (right, AI)
+  - HP bars (5/5 each), team labels, character avatars on each side
+  - AI auto-answers after delay (5-8s easy, 3.5-6s medium, 2.5-4.5s hard) with progress bar
+  - AI correctness probability (55%/70%/85% by difficulty)
+  - Race mechanic: if player answers correctly first → attack enemy (HP -1); if wrong → AI gets free attack
+  - If AI answers correctly first → attacks player; if AI wrong → player gets another chance
+  - Attack animations (⚡ from player, 🔥 from enemy), shake feedback, projectile motion
+  - Team "members indicator" dots (visual flair)
+  - Game over overlay with win/lose state
+- Wired TeamBattleGame into GameScreen switch + ArcadeScreen game list
+- Updated world.ts: Challenge Arena Boss level (ca-3) now uses team_battle (Tim Merah vs Tim Biru)
+- Built admin API routes:
+  - POST /api/admin/login (password check, default "nusa-admin", overridable via env var)
+  - GET/POST/PUT/DELETE /api/admin/questions (full CRUD with admin token auth)
+  - GET /api/admin/stats (totals, by grade/difficulty/subcategory, recent sessions, recent players, session aggregate)
+  - GET/POST /api/admin/sessions (session log list/create)
+- Built AdminScreen (`src/components/nusa/screens/AdminScreen.tsx`):
+  - Login screen with password input (default hint shown)
+  - Token persisted in sessionStorage (survives refresh)
+  - 3 tabs: Dashboard, Soal (Questions), Sesi (Sessions)
+  - Dashboard: 6 stat cards (total soal/pemain/sesi/akurasi/numerik/literasi), soal per kelas bars, soal per tingkat bars, top subkategori bars, sesi stats, pemain terbaru
+  - Questions tab: filter by grade/category/difficulty/subcategory/search; list with expandable rows showing full question details; edit/delete per row; "Tambah Soal" button opens editor modal
+  - Question Editor modal: full form (ID, grade, category, difficulty, gameType, subcategory, question, story, highlight, options one-per-line, answer, explanation, hints one-per-line, xpReward) with validation
+  - Sessions tab: list of recent sessions with accuracy stats
+- Added "Admin" button on Home screen (with Shield icon)
+- Updated SettingsScreen: added TV/PED Mode toggle (with Tv lucide icon); toggling sets tvMode + auto-sets textScale to 'large' when on, 'normal' when off
+- TV Mode CSS in globals.css: defines `html.tv-mode` selector outside @layer (for highest specificity) that scales:
+  - Font sizes: text-xs (0.9rem) through text-8xl (6.5rem) — ~55-65% larger than normal
+  - Touch targets: min-height 56px for all buttons/role=button
+  - Padding/gaps: p-3 → 1rem, p-4 → 1.5rem, p-5 → 2rem, p-6 → 2.5rem; gap-2/3/4 doubled
+  - Border radius: rounded-2xl → 1.5rem, rounded-3xl → 2rem
+  - Tiny text: text-[10px] → 0.85rem, text-[11px] → 0.95rem
+- Updated page.tsx and GameShell: apply `tv-mode` class to documentElement via useEffect that watches settings.tvMode
+- Browser-verified end-to-end:
+  - Login as admin with password "nusa-admin" → dashboard shows stats (454 numerik, 120 literasi, by grade/difficulty/subcategory)
+  - Created TEST-001 question (soal cerita "Berapa hasil dari 100 + 50?", answer 150) via admin form — saved to DB
+  - Verified TEST-001 appears in player API `/api/questions` response
+  - Deleted TEST-001 via admin → verified removed from DB
+  - TeamBattleGame playable in Arcade: HP 5/5 vs 5/5, AI thinking progress bar, attack animations, HP drops correctly (5/5 → 4/5) on correct answer
+  - TV Mode toggle works: text sizes scale up (h1 from 36px → 47.84px, text-base from 16px → 24.84px), button min-height from 80px → 128px
+  - TV Mode persists across page reloads (via localStorage)
+- Lint passes clean (no errors, no warnings)
+
+Stage Summary:
+- Team Battle (Pertarungan Kelompok): 9th mini-game type, perfect for "cepat-cepatan jawab" race between Tim Merah & Tim Biru with attack animations
+- TV/PED Mode: full responsive scaling for school TVs/projectors — fonts 55-65% larger, touch targets 56-128px min, larger padding & gaps, larger border radius. Toggle in Settings, persists via localStorage
+- Admin Menu: 3-tab dashboard (Dashboard/Soal/Sesi) with full CRUD for questions, real-time stats, recent players & sessions monitoring. Password-protected (default "nusa-admin", configurable via ADMIN_PASSWORD env var)
+- All features integrated end-to-end and browser-verified

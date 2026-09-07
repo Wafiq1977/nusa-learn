@@ -18,12 +18,14 @@ import { SettingsScreen } from '@/components/nusa/screens/SettingsScreen'
 import { DailyChallengeScreen } from '@/components/nusa/screens/DailyChallengeScreen'
 import { PracticeScreen } from '@/components/nusa/screens/PracticeScreen'
 import { ArcadeScreen } from '@/components/nusa/screens/ArcadeScreen'
+import { AdminScreen } from '@/components/nusa/screens/AdminScreen'
 
 export default function Home() {
   const [hydrated, setHydrated] = useState(false)
   const view = useGameStore((s) => s.view)
   const hasPlayer = useGameStore((s) => !!s.name)
   const setView = useGameStore((s) => s.setView)
+  const tvMode = useGameStore((s) => s.settings.tvMode)
 
   // Wait for Zustand persist to hydrate from localStorage
   useEffect(() => {
@@ -31,6 +33,13 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setHydrated(true)
   }, [])
+
+  // Apply TV mode + reduce motion globally
+  useEffect(() => {
+    const s = useGameStore.getState().settings
+    document.documentElement.classList.toggle('tv-mode', s.tvMode)
+    document.documentElement.classList.toggle('reduce-motion', s.reduceMotion || !s.animations)
+  }, [tvMode])
 
   if (!hydrated) {
     return (
@@ -54,7 +63,7 @@ export default function Home() {
   // Determine HUD settings per view
   const showBack = view !== 'home'
   const showHome = view !== 'home'
-  const showSettings = ['home', 'progress', 'rewards', 'profile', 'settings', 'world_map', 'area', 'level_select', 'daily', 'practice', 'arcade'].includes(view)
+  const showSettings = ['home', 'progress', 'rewards', 'profile', 'settings', 'world_map', 'area', 'level_select', 'daily', 'practice', 'arcade', 'admin'].includes(view)
   const hideHud = view === 'game' // game has its own progress UI, but we still want HUD for stars/coins
 
   // Actually game view DOES want HUD for coins/stars/XP
@@ -82,6 +91,7 @@ export default function Home() {
         {view === 'daily' && <DailyChallengeScreen />}
         {view === 'practice' && <PracticeScreen />}
         {view === 'arcade' && <ArcadeScreen />}
+        {view === 'admin' && <AdminScreen />}
       </GameShell>
       <MusicWidget />
     </>
