@@ -10,6 +10,10 @@ import { useNovaHint } from '@/hooks/use-questions'
 import { playSound } from '@/lib/nusa/sound'
 import { Lightbulb, X, Loader2 } from 'lucide-react'
 import type { Question } from '@/store/gameStore'
+import { CatchGame } from '@/components/nusa/games/CatchGame'
+import { ShopGame } from '@/components/nusa/games/ShopGame'
+import { PathGame } from '@/components/nusa/games/PathGame'
+import { BattleGame } from '@/components/nusa/games/BattleGame'
 
 export function NovaHintBubble({
   hint,
@@ -514,7 +518,7 @@ export function GameScreen() {
     }, res.correct ? 1200 : 1700)
   }
 
-  const gameType = q.gameType
+  const gameType = session.gameType || q.gameType
   const renderGame = () => {
     switch (gameType) {
       case 'story':
@@ -523,6 +527,14 @@ export function GameScreen() {
         return <PatternGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'build':
         return <BuildGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
+      case 'catch':
+        return <CatchGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
+      case 'shop':
+        return <ShopGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
+      case 'path':
+        return <PathGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
+      case 'battle':
+        return <BattleGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'choice':
       default:
         return <ChoiceGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
@@ -570,9 +582,9 @@ export function GameScreen() {
 
         {renderGame()}
 
-        {/* Feedback overlay */}
+        {/* Feedback overlay (hidden for animated games with their own feedback) */}
         <AnimatePresence>
-          {feedback && (
+          {feedback && !['catch', 'shop', 'path', 'battle'].includes(gameType) && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useGameStore } from '@/store/gameStore'
 import { GameShell } from '@/components/nusa/GameShell'
+import { MusicWidget } from '@/components/nusa/MusicWidget'
 import { SplashScreen } from '@/components/nusa/screens/SplashScreen'
 import { OnboardingScreen } from '@/components/nusa/screens/OnboardingScreen'
 import { HomeScreen } from '@/components/nusa/screens/HomeScreen'
@@ -16,6 +17,7 @@ import { ProfileScreen } from '@/components/nusa/screens/ProfileScreen'
 import { SettingsScreen } from '@/components/nusa/screens/SettingsScreen'
 import { DailyChallengeScreen } from '@/components/nusa/screens/DailyChallengeScreen'
 import { PracticeScreen } from '@/components/nusa/screens/PracticeScreen'
+import { ArcadeScreen } from '@/components/nusa/screens/ArcadeScreen'
 
 export default function Home() {
   const [hydrated, setHydrated] = useState(false)
@@ -29,9 +31,6 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setHydrated(true)
   }, [])
-
-  // After hydration, if player exists but view is splash, the user can still see splash then click to enter home.
-  // If player doesn't exist after hydration, force onboarding after splash.
 
   if (!hydrated) {
     return (
@@ -55,32 +54,36 @@ export default function Home() {
   // Determine HUD settings per view
   const showBack = view !== 'home'
   const showHome = view !== 'home'
-  const showSettings = ['home', 'progress', 'rewards', 'profile', 'settings', 'world_map', 'area', 'level_select', 'daily', 'practice'].includes(view)
+  const showSettings = ['home', 'progress', 'rewards', 'profile', 'settings', 'world_map', 'area', 'level_select', 'daily', 'practice', 'arcade'].includes(view)
   const hideHud = view === 'game' // game has its own progress UI, but we still want HUD for stars/coins
 
   // Actually game view DOES want HUD for coins/stars/XP
   const bgVariant = view === 'world_map' || view === 'splash' ? 'deep' : 'light'
 
   return (
-    <GameShell
-      showBack={showBack}
-      showHome={showHome}
-      showSettings={showSettings}
-      bgVariant={view === 'world_map' ? 'deep' : 'light'}
-      hideHud={false}
-    >
-      {view === 'home' && <HomeScreen />}
-      {view === 'world_map' && <WorldMapScreen />}
-      {view === 'area' && <AreaScreen />}
-      {view === 'level_select' && <LevelSelectScreen />}
-      {view === 'game' && <GameScreen />}
-      {view === 'result' && <ResultScreen />}
-      {view === 'progress' && <ProgressScreen />}
-      {view === 'rewards' && <RewardsScreen />}
-      {view === 'profile' && <ProfileScreen />}
-      {view === 'settings' && <SettingsScreen />}
-      {view === 'daily' && <DailyChallengeScreen />}
-      {view === 'practice' && <PracticeScreen />}
-    </GameShell>
+    <>
+      <GameShell
+        showBack={showBack}
+        showHome={showHome}
+        showSettings={showSettings}
+        bgVariant={view === 'world_map' ? 'deep' : 'light'}
+        hideHud={false}
+      >
+        {view === 'home' && <HomeScreen />}
+        {view === 'world_map' && <WorldMapScreen />}
+        {view === 'area' && <AreaScreen />}
+        {view === 'level_select' && <LevelSelectScreen />}
+        {view === 'game' && <GameScreen />}
+        {view === 'result' && <ResultScreen />}
+        {view === 'progress' && <ProgressScreen />}
+        {view === 'rewards' && <RewardsScreen />}
+        {view === 'profile' && <ProfileScreen />}
+        {view === 'settings' && <SettingsScreen />}
+        {view === 'daily' && <DailyChallengeScreen />}
+        {view === 'practice' && <PracticeScreen />}
+        {view === 'arcade' && <ArcadeScreen />}
+      </GameShell>
+      <MusicWidget />
+    </>
   )
 }

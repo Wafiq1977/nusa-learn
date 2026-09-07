@@ -7,7 +7,7 @@ import { GlowButton } from '@/components/nusa/GlowButton'
 import { NovaMascot } from '@/components/nusa/NovaMascot'
 import { CharacterAvatar } from './OnboardingScreen'
 import { playSound } from '@/lib/nusa/sound'
-import { Compass, Calendar, BarChart3, Trophy, User, Zap, ChevronRight, Star, Sparkles } from 'lucide-react'
+import { Compass, Calendar, BarChart3, Trophy, User, Zap, ChevronRight, Star, Sparkles, Gamepad2 } from 'lucide-react'
 
 export function HomeScreen() {
   const name = useGameStore((s) => s.name)
@@ -189,6 +189,17 @@ export function HomeScreen() {
             setView('practice')
           }}
           delay={0.5}
+        />
+        <MenuCard
+          icon={<Gamepad2 className="h-6 w-6" />}
+          title="Arcade"
+          subtitle="Mini-game seru"
+          glow="purple"
+          onClick={() => {
+            if (soundOn) playSound('whoosh')
+            setView('arcade')
+          }}
+          delay={0.55}
         />
       </motion.div>
 

@@ -173,6 +173,7 @@ export function LevelSelectScreen() {
       title: level.name,
       subtitle: level.subtitle,
       questions,
+      gameType: level.gameType,
     })
   }
 

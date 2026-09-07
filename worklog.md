@@ -84,3 +84,35 @@ Stage Summary:
 - Browser-verified end-to-end: splash → onboarding → home → world map → area → level select → choice game → story game → pattern game → build game → result → daily challenge → practice → progress → rewards → profile → settings all render and work
 - NOVA LLM hint endpoint tested via curl — returns kid-friendly Indonesian hints that never reveal the answer (source: "llm" confirms SDK is invoked)
 - localStorage persistence verified (player data, completed levels, badges, skill progress, settings all saved)
+
+---
+Task ID: 3
+Agent: main
+Task: Continue NUSA LEARN development — add music system with multiple background tracks + new animated mini-games (catch, shop, path, battle)
+
+Work Log:
+- Built procedural music manager (`src/lib/nusa/music.ts`): Web Audio synthesis, 6 looping tracks (Petualangan, Siang Ceria, Tenang, Misteri, Kemenangan, Tanpa Musik). Each track has melody + bass + optional pad chord. Master gain control, stop/start/crossfade. Subscribe pattern for React integration.
+- Added `musicTrack` field to Settings in gameStore + extended Question.gameType with `catch` | `shop` | `path` | `battle`
+- Built MusicWidget (`src/components/nusa/MusicWidget.tsx`): floating bottom-right control visible on all screens (hidden on splash/onboarding). Spinning track emoji when playing, equalizer bars, expandable track picker. Persists via gameStore + auto-starts selected track.
+- Updated SettingsScreen: added track picker grid showing all 6 tracks with "now playing" indicator. Toggle for music on/off works with audio context unlock.
+- Built 4 new animated mini-games in `src/components/nusa/games/`:
+  - **CatchGame** (Number Catch): Falling numbers descend from top, animated character at bottom moves left/right (button + keyboard arrows), catches correct answer token. Staggered token spawns, catch zone detection.
+  - **ShopGame** (Belanja Seru): 4 stalls with items + prices. Character walks from start to selected stall (animated via setInterval, walking bob). Receipt overlay shows result. Indonesian items (Apel, Susu, Roti, Pisang, etc.) with Rupiah formatting.
+  - **PathGame** (Penjelajah Jalur / Reading Maze): 3 branching paths with answer options at the end. Character walks along Bezier curve path to chosen branch. Includes scenery (trees, clouds). Always ensures correct answer is among the 3 paths (bugfix: previously could drop correct answer if it was at index 3).
+  - **BattleGame** (Pertarungan Robot): vs enemy robot with HP bars (3 HP each). Correct answer = attack enemy (projectile animation + shake), wrong = enemy attacks player. Game over overlay when either HP reaches 0. Uses NOVA mascot as enemy avatar with expressions.
+- Updated world.ts level definitions: Number City L1 → CatchGame, L3 → BattleGame, L4 → PathGame, Boss → ShopGame. Literacy Forest L3 → PathGame. Logic Lab L2 → CatchGame, L4 → PathGame, Boss → BattleGame. Future Station L2 → CatchGame, L3 → BattleGame, Boss → PathGame. Challenge Arena all 3 → ShopGame/BattleGame/CatchGame.
+- Fixed GameScreen bug: previously used `q.gameType` (from DB question) instead of `session.gameType` (from level definition). Added `gameType` field to GameSession interface and pass it from LevelSelectScreen via startSession. GameScreen now uses `session.gameType || q.gameType` for rendering.
+- Built ArcadeScreen (`src/components/nusa/screens/ArcadeScreen.tsx`): hub showing all 8 mini-games (Number Catch, Belanja Seru, Penjelajah Jalur, Pertarungan Robot, Story Explorer, Sentence Builder, Pattern Lab, Quick Quiz). Each opens in modal with question flow, XP/coin rewards, "Game Selesai" result.
+- Added "Arcade" button to HomeScreen menu (using Gamepad2 lucide icon).
+- Updated page.tsx router: added 'arcade' view + MusicWidget rendered globally.
+- Updated useQuestions hook: extended gameType type to include new types; only filter by gameType for game types with dedicated DB questions (build/story/pattern).
+- Browser-verified end-to-end: CatchGame in Number City L1, BattleGame (defeated enemy after 3 correct attacks), ShopGame (selected correct-priced item, character walked, receipt shown), PathGame (chose correct path, character walked along Bezier, advanced to Q2), Arcade screen with all 8 games, Music widget with 6 tracks + switching + persistence (verified localStorage).
+- Lint passes clean (no errors). No console errors during browser testing.
+
+Stage Summary:
+- 5 new background music tracks (procedural, no asset files) — Petualangan (adventure), Siang Ceria (cheerful), Tenang (calm), Misteri (mystery), Kemenangan (victory)
+- Music widget with track switcher + persistence, plus integration in Settings screen
+- 4 new animated mini-games with character animations: CatchGame (falling numbers + character catcher), ShopGame (animated shopping with walking character), PathGame (character walks along branching paths), BattleGame (HP-based battle with attack/hurt animations)
+- All 4 new mini-games integrated into existing level progression across all 6 areas
+- New Arcade hub screen for direct mini-game access (8 games total)
+- Total mini-games now: 8 (choice, story, pattern, build, catch, shop, path, battle) — exceeds spec requirements of 3+ mini-games

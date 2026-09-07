@@ -19,6 +19,7 @@ export type GameView =
   | 'settings'
   | 'daily'
   | 'practice'
+  | 'arcade'
 
 export type Difficulty = 'easy' | 'medium' | 'hard'
 
@@ -35,6 +36,7 @@ export interface Character {
 export interface Settings {
   sound: boolean
   music: boolean
+  musicTrack: string // 'petualangan' | 'ceria' | 'tenang' | 'misteri' | 'kemenangan' | 'off'
   animations: boolean
   reduceMotion: boolean
   textScale: 'small' | 'normal' | 'large'
@@ -47,6 +49,7 @@ export interface GameSession {
   title: string
   subtitle: string
   questions: Question[]
+  gameType: 'choice' | 'story' | 'pattern' | 'match' | 'build' | 'catch' | 'shop' | 'path' | 'battle'
   currentIndex: number
   correct: number
   wrong: number
@@ -65,7 +68,7 @@ export interface Question {
   category: 'numerik' | 'literasi'
   subcategory: string
   difficulty: Difficulty
-  gameType: 'choice' | 'story' | 'pattern' | 'match' | 'build'
+  gameType: 'choice' | 'story' | 'pattern' | 'match' | 'build' | 'catch' | 'shop' | 'path' | 'battle'
   question: string
   story?: string | null
   highlight?: string[] | null
@@ -182,6 +185,7 @@ const DEFAULT_CHARACTER: Character = {
 const DEFAULT_SETTINGS: Settings = {
   sound: true,
   music: true,
+  musicTrack: 'petualangan',
   animations: true,
   reduceMotion: false,
   textScale: 'normal',
@@ -250,7 +254,7 @@ export const useGameStore = create<GameStore>()(
         if (v === 'game' || v === 'briefing' || v === 'level_select') set({ view: 'area', session: null })
         else if (v === 'area') set({ view: 'world_map', currentAreaId: null })
         else if (v === 'result') set({ view: 'level_select', session: null })
-        else if (v === 'world_map' || v === 'progress' || v === 'rewards' || v === 'profile' || v === 'settings' || v === 'daily' || v === 'practice') set({ view: 'home' })
+        else if (v === 'world_map' || v === 'progress' || v === 'rewards' || v === 'profile' || v === 'settings' || v === 'daily' || v === 'practice' || v === 'arcade') set({ view: 'home' })
         else set({ view: 'home' })
       },
       selectArea: (id) => set({ currentAreaId: id, view: 'area' }),

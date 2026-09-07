@@ -6,17 +6,43 @@ import { GlassCard } from '@/components/nusa/GlassCard'
 import { GlowButton } from '@/components/nusa/GlowButton'
 import { NovaMascot } from '@/components/nusa/NovaMascot'
 import { playSound, setSoundEnabled } from '@/lib/nusa/sound'
-import { useEffect } from 'react'
+import { TRACKS, playMusic, stopMusic, unlockAudio, isMusicPlaying, getCurrentTrackId } from '@/lib/nusa/music'
+import { useEffect, useState } from 'react'
 import { Volume2, VolumeX, Music, Music2, Sparkles, Zap, Type } from 'lucide-react'
 
 export function SettingsScreen() {
   const settings = useGameStore((s) => s.settings)
   const updateSettings = useGameStore((s) => s.updateSettings)
   const goHome = useGameStore((s) => s.goHome)
+  const [, force] = useState(0)
 
   useEffect(() => {
     setSoundEnabled(settings.sound)
   }, [settings.sound])
+
+  const handleMusicToggle = (v: boolean) => {
+    updateSettings({ music: v })
+    unlockAudio()
+    if (v && settings.musicTrack && settings.musicTrack !== 'off') {
+      playMusic(settings.musicTrack)
+    } else {
+      stopMusic()
+    }
+    force((x) => x + 1)
+  }
+
+  const handleTrackSelect = (trackId: string) => {
+    unlockAudio()
+    playSound('click')
+    if (trackId === 'off') {
+      updateSettings({ music: false, musicTrack: 'off' })
+      stopMusic()
+    } else {
+      updateSettings({ music: true, musicTrack: trackId })
+      playMusic(trackId)
+    }
+    force((x) => x + 1)
+  }
 
   return (
     <div className="space-y-5 pb-4">
@@ -42,10 +68,49 @@ export function SettingsScreen() {
           <ToggleRow
             icon={settings.music ? <Music className="h-5 w-5" /> : <Music2 className="h-5 w-5" />}
             label="Musik Latar"
-            desc="Musik lembut saat bermain (segera hadir)"
+            desc="Musik seru saat bermain"
             value={settings.music}
-            onToggle={(v) => updateSettings({ music: v })}
+            onToggle={handleMusicToggle}
           />
+        </div>
+
+        {/* Track picker */}
+        <div className="mt-4">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-700">
+            <Music className="h-4 w-4" /> Pilih Musik
+          </div>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {TRACKS.map((t) => {
+              const isActive = settings.musicTrack === t.id || (t.id === 'off' && (!settings.music || settings.musicTrack === 'off'))
+              const isPlaying = isActive && isMusicPlaying() && t.id !== 'off'
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => handleTrackSelect(t.id)}
+                  className={`relative flex items-center gap-2 rounded-2xl border-2 p-2.5 text-left transition-all ${
+                    isActive
+                      ? 'border-cyan-400 bg-cyan-50 shadow-sm'
+                      : 'border-slate-200 bg-white/70 hover:border-cyan-300'
+                  }`}
+                >
+                  <span className="text-2xl">{t.emoji}</span>
+                  <div className="flex-1 overflow-hidden">
+                    <div className="truncate text-xs font-bold text-slate-800">{t.name}</div>
+                    <div className="truncate text-[10px] text-slate-500">{t.description}</div>
+                  </div>
+                  {isPlaying && (
+                    <motion.div
+                      animate={{ scaleY: [0.4, 1, 0.4] }}
+                      transition={{ duration: 0.6, repeat: Infinity }}
+                      className="absolute right-1 top-1 text-cyan-500"
+                    >
+                      🎵
+                    </motion.div>
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </GlassCard>
 
@@ -94,7 +159,7 @@ export function SettingsScreen() {
       <GlassCard className="flex items-center gap-3 p-4">
         <NovaMascot expression="thinking" size={44} />
         <p className="text-sm text-slate-600">
-          <b className="text-slate-800">NOVA:</b> Jika suara mengganggu, matikan kapan saja. Kamu bisa kurangi animasi jika perangkatmu terasa berat. 💙
+          <b className="text-slate-800">NOVA:</b> Pilih musik favoritmu untuk menemani petualangan! Musik bisa diganti kapan saja. 🎵
         </p>
       </GlassCard>
 

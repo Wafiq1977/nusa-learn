@@ -10,7 +10,7 @@ interface UseQuestionsArgs {
   difficulty?: 'easy' | 'medium' | 'hard'
   limit: number
   mix?: boolean
-  gameType?: 'choice' | 'story' | 'pattern' | 'match' | 'build'
+  gameType?: 'choice' | 'story' | 'pattern' | 'match' | 'build' | 'catch' | 'shop' | 'path' | 'battle'
   enabled?: boolean
 }
 
