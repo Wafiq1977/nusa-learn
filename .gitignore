@@ -52,3 +52,15 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Database local (jangan commit ke production)
+db/*.db
+db/*.db-journal
+db/*.db-wal
+db/*.db-shm
+
+# Worklog internal
+worklog.md
+
+# Z scripts
+.zscripts/
