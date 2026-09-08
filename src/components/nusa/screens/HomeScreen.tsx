@@ -7,7 +7,7 @@ import { GlowButton } from '@/components/nusa/GlowButton'
 import { NovaMascot } from '@/components/nusa/NovaMascot'
 import { CharacterAvatar } from './OnboardingScreen'
 import { playSound } from '@/lib/nusa/sound'
-import { Compass, Calendar, BarChart3, Trophy, User, Zap, ChevronRight, Star, Sparkles, Gamepad2, Shield } from 'lucide-react'
+import { Compass, Calendar, BarChart3, Trophy, User, Zap, ChevronRight, Star, Sparkles, Gamepad2, Shield, Users } from 'lucide-react'
 
 export function HomeScreen() {
   const name = useGameStore((s) => s.name)
@@ -202,6 +202,17 @@ export function HomeScreen() {
           delay={0.55}
         />
         <MenuCard
+          icon={<Users className="h-6 w-6" />}
+          title="Multiplayer"
+          subtitle="Main bareng teman"
+          glow="cyan"
+          onClick={() => {
+            if (soundOn) playSound('whoosh')
+            setView('multiplayer_setup')
+          }}
+          delay={0.6}
+        />
+        <MenuCard
           icon={<Shield className="h-6 w-6" />}
           title="Admin"
           subtitle="Kelola soal & monitor"
@@ -210,7 +221,7 @@ export function HomeScreen() {
             if (soundOn) playSound('whoosh')
             setView('admin')
           }}
-          delay={0.6}
+          delay={0.65}
         />
       </motion.div>
 

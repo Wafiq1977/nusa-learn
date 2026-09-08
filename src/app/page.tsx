@@ -19,6 +19,8 @@ import { DailyChallengeScreen } from '@/components/nusa/screens/DailyChallengeSc
 import { PracticeScreen } from '@/components/nusa/screens/PracticeScreen'
 import { ArcadeScreen } from '@/components/nusa/screens/ArcadeScreen'
 import { AdminScreen } from '@/components/nusa/screens/AdminScreen'
+import { MultiplayerSetupScreen } from '@/components/nusa/screens/MultiplayerSetupScreen'
+import { MultiplayerBattleScreen } from '@/components/nusa/screens/MultiplayerBattleScreen'
 
 export default function Home() {
   const [hydrated, setHydrated] = useState(false)
@@ -63,7 +65,7 @@ export default function Home() {
   // Determine HUD settings per view
   const showBack = view !== 'home'
   const showHome = view !== 'home'
-  const showSettings = ['home', 'progress', 'rewards', 'profile', 'settings', 'world_map', 'area', 'level_select', 'daily', 'practice', 'arcade', 'admin'].includes(view)
+  const showSettings = ['home', 'progress', 'rewards', 'profile', 'settings', 'world_map', 'area', 'level_select', 'daily', 'practice', 'arcade', 'admin', 'multiplayer_setup', 'multiplayer_battle'].includes(view)
   const hideHud = view === 'game' // game has its own progress UI, but we still want HUD for stars/coins
 
   // Actually game view DOES want HUD for coins/stars/XP
@@ -92,6 +94,8 @@ export default function Home() {
         {view === 'practice' && <PracticeScreen />}
         {view === 'arcade' && <ArcadeScreen />}
         {view === 'admin' && <AdminScreen />}
+        {view === 'multiplayer_setup' && <MultiplayerSetupScreen />}
+        {view === 'multiplayer_battle' && <MultiplayerBattleScreen />}
       </GameShell>
       <MusicWidget />
     </>

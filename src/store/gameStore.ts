@@ -21,6 +21,8 @@ export type GameView =
   | 'practice'
   | 'arcade'
   | 'admin'
+  | 'multiplayer_setup'
+  | 'multiplayer_battle'
 
 export type Difficulty = 'easy' | 'medium' | 'hard'
 
@@ -257,7 +259,8 @@ export const useGameStore = create<GameStore>()(
         if (v === 'game' || v === 'briefing' || v === 'level_select') set({ view: 'area', session: null })
         else if (v === 'area') set({ view: 'world_map', currentAreaId: null })
         else if (v === 'result') set({ view: 'level_select', session: null })
-        else if (v === 'world_map' || v === 'progress' || v === 'rewards' || v === 'profile' || v === 'settings' || v === 'daily' || v === 'practice' || v === 'arcade' || v === 'admin') set({ view: 'home' })
+        else if (v === 'multiplayer_battle') set({ view: 'multiplayer_setup' })
+        else if (v === 'world_map' || v === 'progress' || v === 'rewards' || v === 'profile' || v === 'settings' || v === 'daily' || v === 'practice' || v === 'arcade' || v === 'admin' || v === 'multiplayer_setup') set({ view: 'home' })
         else set({ view: 'home' })
       },
       selectArea: (id) => set({ currentAreaId: id, view: 'area' }),

@@ -173,3 +173,51 @@ Stage Summary:
 - TV/PED Mode: full responsive scaling for school TVs/projectors — fonts 55-65% larger, touch targets 56-128px min, larger padding & gaps, larger border radius. Toggle in Settings, persists via localStorage
 - Admin Menu: 3-tab dashboard (Dashboard/Soal/Sesi) with full CRUD for questions, real-time stats, recent players & sessions monitoring. Password-protected (default "nusa-admin", configurable via ADMIN_PASSWORD env var)
 - All features integrated end-to-end and browser-verified
+
+---
+Task ID: 5
+Agent: main
+Task: Build local multiplayer mode — 2-4 tim main bareng di satu monitor/TV untuk kelas
+
+Work Log:
+- Added 'multiplayer_setup' and 'multiplayer_battle' views to gameStore
+- Updated goBack to handle new views (battle → setup, setup → home)
+- Built MultiplayerSetupScreen (`src/components/nusa/screens/MultiplayerSetupScreen.tsx`):
+  - Pilih 2-4 tim dengan tombol + / −
+  - 4 palet tim (Merah/Biru/Hijau/Kuning) dengan emoji 🟢🟡🟢🟡, border, glow
+  - Input nama tiap tim (max 24 char)
+  - Pengaturan: Kelas (1-6), Kategori (Campuran/Numerik/Literasi), Tingkat (Mudah/Sedang/Sulit), Jumlah Soal (5-20)
+  - Mode Giliran: Bergiliran (round-robin, adil) atau Siapa Cepat (buzzer, seru)
+  - Toggle animasi serangan
+  - Config disimpan ke sessionStorage saat mulai
+- Updated useQuestions hook untuk support category='mixed' — fetch numerik+literasi, shuffle, take limit
+- Built MultiplayerBattleScreen (`src/components/nusa/screens/MultiplayerBattleScreen.tsx`):
+  - Phase: intro (3-2-1 countdown) → question → reveal → finished (podium)
+  - Live scoreboard top: kartu tim dengan warna, poin, ✓/✗/🔥 streak, ring highlight untuk tim yang giliran
+  - Soal card: kategori/subkategori/difficulty badge, story (untuk literasi), pertanyaan, 4 opsi A-D
+  - Mode Bergiliran: label "Giliran: Tim X", hanya tim yang giliran bisa jawab
+  - Mode Siapa Cepat: tombol "Tekan!" per tim di bawah soal, opsi disabled sampai ada tim yang buzz
+  - Scoring: +10 base + streak bonus (max +25), attack -3 ke tim dengan skor tertinggi
+  - Animasi serang: 💥 projectile dari penyerang ke target, shake pada target
+  - Reveal: ✓ benar (🎉 +poin) atau ✗ salah (jawaban + penjelasan)
+  - Podium akhir: medali 🥇🥈🥉🎖️, nama tim, skor, ✓/✗/🔥, tombol Atur Ulang/Main Lagi/Beranda
+- Fixed bug: handleTeamAnswer had `buzzerLock` check that prevented buzzer mode from working — replaced with explicit `picked` + `pickedBy === teamIdx` checks
+- Added "Multiplayer" button on Home screen (Users lucide icon)
+- Wired MultiplayerSetupScreen + MultiplayerBattleScreen into page.tsx router
+- Browser-verified end-to-end:
+  - Setup 3 tim (Merah/Biru/Hijau), klik Tambah Tim otomatis add Tim Hijau
+  - Mulai Pertarungan: 3-2-1 countdown, lalu soal literasi "Apa ide pokok..." 
+  - Tim Merah jawab A benar → skor naik ke 15 (10 + 5 streak), giliran pindah ke Tim Biru
+  - Tim Biru jawab D (18÷3=6) benar → skor 15, Tim Merah turun ke 12 (attack -3)
+  - Main sampai selesai (8 soal) → podium muncul: 🥇 Tim Biru 57 poin (3✓1✗), 🥈 Tim Merah 21 poin (2✓2✗🔥1)
+  - Mode Siapa Cepat: tombol "Tekan!" per tim, opsi disabled sampai tim buzz, lalu Tim Biru ambil & jawab
+- Lint passes clean (no errors)
+
+Stage Summary:
+- Multiplayer lokal: 2-4 tim main bareng di satu monitor/TV, cocok untuk kelas
+- 2 mode: Bergiliran (round-robin, adil) & Siapa Cepat (buzzer race)
+- Live scoreboard dengan animasi serang antar tim
+- Podium akhir dengan medali & statistik per tim
+- Mix numerik + literasi soal
+- Full responsive (TV mode aware, 2xl breakpoint scaling)
+- Config disimpan ke sessionStorage (survive refresh, reset saat setup baru)

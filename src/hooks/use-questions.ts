@@ -5,7 +5,7 @@ import type { Question } from '@/store/gameStore'
 
 interface UseQuestionsArgs {
   grade: number
-  category: 'numerik' | 'literasi'
+  category: 'numerik' | 'literasi' | 'mixed'
   subcategory?: string
   difficulty?: 'easy' | 'medium' | 'hard'
   limit: number
@@ -32,19 +32,43 @@ export function useQuestions({
     setLoading(true)
     setError(null)
     try {
-      const params = new URLSearchParams({
-        grade: String(grade),
-        category,
-        limit: String(limit),
-      })
-      if (subcategory) params.set('subcategory', subcategory)
-      if (difficulty) params.set('difficulty', difficulty)
-      if (mix) params.set('mix', 'true')
-      if (gameType) params.set('gameType', gameType)
-      const res = await fetch(`/api/questions?${params.toString()}`)
-      if (!res.ok) throw new Error('Gagal memuat soal')
-      const data = await res.json()
-      setQuestions(data.questions || [])
+      const buildParams = (cat: 'numerik' | 'literasi') => {
+        const params = new URLSearchParams({
+          grade: String(grade),
+          category: cat,
+          limit: String(limit),
+        })
+        if (subcategory) params.set('subcategory', subcategory)
+        if (difficulty) params.set('difficulty', difficulty)
+        if (mix) params.set('mix', 'true')
+        if (gameType) params.set('gameType', gameType)
+        return params.toString()
+      }
+
+      let combined: Question[] = []
+      if (category === 'mixed') {
+        // Fetch both numerik and literasi, then shuffle together
+        const [numRes, litRes] = await Promise.all([
+          fetch(`/api/questions?${buildParams('numerik')}`),
+          fetch(`/api/questions?${buildParams('literasi')}`),
+        ])
+        if (!numRes.ok || !litRes.ok) throw new Error('Gagal memuat soal')
+        const numData = await numRes.json()
+        const litData = await litRes.json()
+        combined = [...(numData.questions || []), ...(litData.questions || [])]
+        // Shuffle & take limit
+        for (let i = combined.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1))
+          ;[combined[i], combined[j]] = [combined[j], combined[i]]
+        }
+        combined = combined.slice(0, limit)
+      } else {
+        const res = await fetch(`/api/questions?${buildParams(category)}`)
+        if (!res.ok) throw new Error('Gagal memuat soal')
+        const data = await res.json()
+        combined = data.questions || []
+      }
+      setQuestions(combined)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Gagal memuat soal')
       setQuestions([])
