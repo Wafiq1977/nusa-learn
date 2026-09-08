@@ -36,6 +36,7 @@ export function MultiplayerBattleScreen() {
   const [strike, setStrike] = useState<ActiveStrike | null>(null)
   const [countdown, setCountdown] = useState(3) // for buzzer question countdown
   const [buzzerLock, setBuzzerLock] = useState(false) // for buzzer mode, first to buzz
+  const [timeLeft, setTimeLeft] = useState(0) // seconds left for current question (0 = no timer)
 
   // Load config from sessionStorage
   useEffect(() => {
@@ -94,6 +95,23 @@ export function MultiplayerBattleScreen() {
     return others[0].idx
   }
 
+  // Advance to next question or finish — called from handleTeamAnswer & timeout
+  const advanceToNext = useCallback(() => {
+    setShowReveal(null)
+    setPicked(null)
+    setPickedBy(null)
+    setBuzzerLock(false)
+    if (qIdx + 1 >= questions.length) {
+      if (soundOn) playSound('celebration')
+      setPhase('finished')
+    } else {
+      setQIdx((i) => i + 1)
+      if (config?.roundMode === 'turn') {
+        setCurrentTeamIdx((i) => (i + 1) % teams.length)
+      }
+    }
+  }, [qIdx, questions.length, config, teams.length, soundOn])
+
   // Handle team answer (turn mode)
   const handleTeamAnswer = useCallback((teamIdx: number, option: string) => {
     if (phase !== 'question' || !q) return
@@ -130,11 +148,9 @@ export function MultiplayerBattleScreen() {
 
     // Trigger attack animation if enabled & correct
     if (config?.attackAnimation && isCorrect) {
-      // Attack the team with highest score (other than us) — or random target
       const targetIdx = pickAttackTarget(teamIdx)
       if (targetIdx >= 0) {
         setStrike({ from: teamIdx, to: targetIdx, correct: true })
-        // Reduce target team score (slight penalty)
         setTeams((ts) => ts.map((t, i) => i === targetIdx ? { ...t, score: Math.max(0, t.score - 3) } : t))
         if (soundOn) playSound('whoosh')
         setTimeout(() => setStrike(null), 1200)
@@ -143,22 +159,65 @@ export function MultiplayerBattleScreen() {
 
     // Reveal answer then advance
     setTimeout(() => {
-      setShowReveal(null)
-      setPicked(null)
-      setPickedBy(null)
-      setBuzzerLock(false)
-      if (qIdx + 1 >= questions.length) {
-        // Finish
-        if (soundOn) playSound('celebration')
-        setPhase('finished')
-      } else {
-        setQIdx((i) => i + 1)
-        if (config?.roundMode === 'turn') {
-          setCurrentTeamIdx((i) => (i + 1) % teams.length)
-        }
-      }
+      advanceToNext()
     }, 1800)
-  }, [phase, q, qIdx, questions.length, currentTeamIdx, teams, teams.length, config, picked, pickedBy, soundOn, pickAttackTarget])
+  }, [phase, q, qIdx, questions.length, currentTeamIdx, teams, teams.length, config, picked, pickedBy, soundOn, advanceToNext, pickAttackTarget])
+
+  // Handle timeout — when timer runs out
+  const handleTimeout = useCallback(() => {
+    if (phase !== 'question' || picked) return // already answered, ignore
+    if (!q) return
+
+    // Mark as wrong (no answer)
+    if (soundOn) playSound('wrong')
+    setShowReveal('wrong')
+
+    // In turn mode, count as wrong for current team
+    if (config?.roundMode === 'turn') {
+      const teamIdx = currentTeamIdx
+      setTeams((ts) => ts.map((t, i) => i === teamIdx ? {
+        ...t,
+        wrong: t.wrong + 1,
+        streak: 0,
+      } : t))
+    }
+    // In buzzer mode, no team loses (just skip)
+
+    // Reveal correct answer then advance
+    setTimeout(() => {
+      advanceToNext()
+    }, 1500)
+  }, [phase, picked, q, config, currentTeamIdx, soundOn, advanceToNext])
+
+  // Timer effect — runs only in question phase, when not yet picked, with timePerQuestion > 0
+  useEffect(() => {
+    if (phase !== 'question') return
+    if (!config || config.timePerQuestion <= 0) return
+    if (picked) return // already answered, stop timer
+
+    // Reset timer when question changes
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTimeLeft(config.timePerQuestion)
+
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval)
+          // Trigger timeout
+          handleTimeout()
+          return 0
+        }
+        // Beep warning at 5 seconds
+        if (prev <= 5 && prev > 0 && soundOn) {
+          playSound('hint')
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+     
+  }, [phase, qIdx, config, picked, handleTimeout])
 
   const restart = () => {
     if (soundOn) playSound('click')
@@ -170,6 +229,7 @@ export function MultiplayerBattleScreen() {
     setShowReveal(null)
     setStrike(null)
     setBuzzerLock(false)
+    setTimeLeft(0)
     setPhase('intro')
   }
 
@@ -386,6 +446,7 @@ export function MultiplayerBattleScreen() {
                 </div>
                 <div className="flex justify-around text-[9px] sm:text-[10px] 2xl:text-xs">
                   <span>✓{t.correct}</span>
+                  <span>✗{t.wrong}</span>
                   <span>🔥{t.streak}</span>
                 </div>
               </motion.div>
@@ -404,6 +465,15 @@ export function MultiplayerBattleScreen() {
           <div className="text-xs font-bold uppercase tracking-widest text-cyan-600 2xl:text-sm">
             {q.category === 'numerik' ? '🔢 Numerik' : '📖 Literasi'} · {q.subcategory} · {q.difficulty === 'easy' ? 'Mudah' : q.difficulty === 'medium' ? 'Sedang' : 'Sulit'}
           </div>
+
+          {/* Timer display */}
+          {config.timePerQuestion > 0 && phase === 'question' && !picked && (
+            <QuestionTimer
+              seconds={timeLeft}
+              total={config.timePerQuestion}
+            />
+          )}
+
           {currentPal && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -583,6 +653,68 @@ export function MultiplayerBattleScreen() {
           💡 Hanya tim yang giliran yang boleh menjawab. Giliran akan pindah ke tim lain setelah soal selesai.
         </p>
       )}
+    </div>
+  )
+}
+
+// ============ Question Timer Component ============
+// Visual timer with circular progress + numeric countdown
+// Color shifts green → amber → red as time runs out
+function QuestionTimer({ seconds, total }: { seconds: number; total: number }) {
+  // Don't render if no timer set or already answered
+  if (total <= 0) return null
+
+  const pct = Math.max(0, Math.min(1, seconds / total))
+  const radius = 28
+  const circumference = 2 * Math.PI * radius
+  const dashOffset = circumference * (1 - pct)
+
+  // Color by remaining time
+  const isLow = seconds <= 5
+  const isMid = seconds <= 10 && seconds > 5
+  const color = isLow ? '#EF4444' : isMid ? '#F59E0B' : '#10B981'
+  const bgClass = isLow ? 'bg-rose-100' : isMid ? 'bg-amber-100' : 'bg-emerald-100'
+  const textClass = isLow ? 'text-rose-700' : isMid ? 'text-amber-700' : 'text-emerald-700'
+
+  return (
+    <div className="mt-2 flex items-center justify-center gap-2">
+      <motion.div
+        initial={{ scale: 1 }}
+        animate={isLow ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+        transition={{ duration: 0.5, repeat: isLow ? Infinity : 0 }}
+        className={`relative flex h-14 w-14 items-center justify-center rounded-full ${bgClass} shadow-md sm:h-16 sm:w-16 2xl:h-20 2xl:w-20`}
+      >
+        {/* Circular progress ring (SVG) */}
+        <svg className="absolute inset-0 -rotate-90" viewBox="0 0 64 64">
+          <circle
+            cx="32"
+            cy="32"
+            r={radius}
+            fill="none"
+            stroke="#E5E7EB"
+            strokeWidth="4"
+          />
+          <motion.circle
+            cx="32"
+            cy="32"
+            r={radius}
+            fill="none"
+            stroke={color}
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            initial={{ strokeDashoffset: 0 }}
+            animate={{ strokeDashoffset: dashOffset }}
+            transition={{ duration: 0.95, ease: 'linear' }}
+          />
+        </svg>
+        <div className={`relative text-lg font-black sm:text-xl 2xl:text-2xl ${textClass}`}>
+          {Math.max(0, seconds)}
+        </div>
+      </motion.div>
+      <div className={`rounded-xl px-3 py-1.5 text-xs font-bold sm:text-sm 2xl:text-base ${bgClass} ${textClass}`}>
+        {isLow ? '⚠️ Waktu hampir habis!' : isMid ? '⏰ Cepat!' : '⏱️ Waktu menjawab'}
+      </div>
     </div>
   )
 }

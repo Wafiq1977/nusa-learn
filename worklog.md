@@ -221,3 +221,61 @@ Stage Summary:
 - Mix numerik + literasi soal
 - Full responsive (TV mode aware, 2xl breakpoint scaling)
 - Config disimpan ke sessionStorage (survive refresh, reset saat setup baru)
+
+---
+Task ID: 6
+Agent: main
+Task: Tambah timer menjawab di mode multiplayer — countdown per soal dengan visual & suara
+
+Work Log:
+- Added `timePerQuestion` field to MultiplayerConfig interface (0 = no timer, else seconds)
+- Default 20 detik (standar)
+- Tambah pilihan durasi di MultiplayerSetupScreen:
+  - ∞ Tanpa Batas (0)
+  - 15 detik (cepat)
+  - 20 detik (standar)
+  - 30 detik (santai)
+  - 45 detik (tenang)
+  - 60 detik (pemikir)
+- Tambah `timeLeft` state di MultiplayerBattleScreen
+- Refactor: extract `advanceToNext` sebagai useCallback untuk dipakai oleh handleTeamAnswer & handleTimeout
+- Tambah `handleTimeout` callback:
+  - Turn mode: count wrong+1 untuk current team, streak reset ke 0
+  - Buzzer mode: skip soal tanpa penalty
+  - Reveal jawaban benar, lalu advance setelah 1.5s
+- Tambah timer effect (useEffect):
+  - Hanya jalan saat phase=question, config.timePerQuestion>0, dan !picked
+  - Reset timeLeft ke config.timePerQuestion saat question berubah
+  - Interval 1 detik, decrement timeLeft
+  - Saat timeLeft ≤ 5: bunyikan playSound('hint') sebagai bip warning
+  - Saat timeLeft ≤ 1: clearInterval & trigger handleTimeout
+  - Cleanup interval saat unmount atau picked berubah
+- Tambah ✗ (wrong) display di live scoreboard (sebelumnya hanya ✓ & 🔥)
+- Build QuestionTimer component:
+  - Circular progress ring (SVG) — diameter 14-20px (responsif)
+  - Angka countdown di tengah (font black, besar)
+  - Warna dinamis:
+    - Hijau (#10B981) saat > 10 detik — "⏱️ Waktu menjawab"
+    - Kuning (#F59E0B) saat 6-10 detik — "⏰ Cepat!"
+    - Merah (#EF4444) saat ≤5 detik — "⚠️ Waktu hampir habis!" + animasi pulse/scale
+  - Badge teks di sebelah lingkaran dengan warna matching
+  - Animasi scale [1, 1.15, 1] saat ≤5 detik (urgent visual)
+- Tambah info hint di setup screen: "⏱ Waktu per Soal: Timer hitung mundur per soal. Kalau habis, tim dianggap salah & soal lanjut."
+- Browser-verified end-to-end:
+  - Setup: timer select muncul dengan default "20 detik (standar)"
+  - Mulai pertarungan: timer lingkaran muncul di atas soal dengan angka 20
+  - Timer berkurang tiap detik (terlihat 18, 14, 6, 2...)
+  - Saat ≤10 detik: warna kuning + "⏰ Cepat!"
+  - Saat ≤5 detik: warna merah + "⚠️ Waktu hampir habis!" + animasi pulse + suara bip
+  - Timeout: soal otomatis pindah, wrong count bertambah untuk tim yang giliran (turn mode)
+  - Jawab benar: timer berhenti (picked=true), skor naik, reveal muncul
+  - Podium akhir tampil dengan statistik ✓/✗/🔥 per tim
+- Lint passes clean (no errors)
+
+Stage Summary:
+- Timer countdown per soal di mode multiplayer (15/20/30/45/60 detik atau tanpa batas)
+- Visual: circular progress ring dengan warna dinamis (hijau→kuning→merah)
+- Suara: bip warning saat ≤5 detik
+- Logic: timeout = wrong+1 (turn mode) atau skip (buzzer mode)
+- Statistik wrong count kini tampil di live scoreboard & podium
+- Full responsive (TV mode aware, 2xl breakpoint scaling)

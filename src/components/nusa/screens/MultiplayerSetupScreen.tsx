@@ -71,6 +71,7 @@ export interface MultiplayerConfig {
   questionCount: number
   roundMode: 'turn' | 'buzzer' // turn = round-robin, buzker = siapa cepat dia dapat (single-tap)
   attackAnimation: boolean
+  timePerQuestion: number // 0 = no timer, else seconds per question
 }
 
 export function MultiplayerSetupScreen() {
@@ -91,6 +92,7 @@ export function MultiplayerSetupScreen() {
     questionCount: 8,
     roundMode: 'turn',
     attackAnimation: true,
+    timePerQuestion: 20,
   })
 
   const updateTeamName = (id: string, name: string) => {
@@ -285,12 +287,30 @@ export function MultiplayerSetupScreen() {
               <option value="off">🚫 Mati</option>
             </select>
           </Field>
+
+          {/* Timer per question */}
+          <Field label="⏱ Waktu per Soal">
+            <select
+              value={config.timePerQuestion}
+              onChange={(e) => setConfig({ ...config, timePerQuestion: Number(e.target.value) })}
+              className="w-full rounded-xl border-2 border-slate-200 bg-white/80 px-3 py-2 text-sm font-semibold focus:border-cyan-400 focus:outline-none 2xl:text-base"
+            >
+              <option value={0}>∞ Tanpa Batas</option>
+              <option value={15}>15 detik (cepat)</option>
+              <option value={20}>20 detik (standar)</option>
+              <option value={30}>30 detik (santai)</option>
+              <option value={45}>45 detik (tenang)</option>
+              <option value={60}>60 detik (pemikir)</option>
+            </select>
+          </Field>
         </div>
 
         <div className="mt-3 rounded-xl bg-cyan-50 p-3 text-xs text-cyan-700 sm:text-sm 2xl:text-base">
           💡 <b>Mode Bergiliran:</b> Setiap soal dijawab tim yang giliran (round-robin). Tim lain menunggu giliran.
           <br />
           ⚡ <b>Mode Siapa Cepat:</b> Semua tim bisa jawab kapan saja. Tim pertama yang jawab benar dapat poin. Cocok untuk kelas aktif!
+          <br />
+          ⏱ <b>Waktu per Soal:</b> Timer hitung mundur per soal. Kalau habis, tim dianggap salah & soal lanjut.
         </div>
       </GlassCard>
 
