@@ -1,6 +1,8 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ============================================================
+# NUSA LEARN — .gitignore
+# ============================================================
 
-# dependencies
+# ---------- Dependencies ----------
 node_modules
 /.pnp
 .pnp.*
@@ -10,59 +12,64 @@ node_modules
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# ---------- Testing ----------
 /coverage
 
-# next.js
+# ---------- Next.js ----------
 /.next/
 /out/
-
-# production
 /build
 
-# misc
+# ---------- Misc ----------
 .DS_Store
 *.pem
 
-# debug
+# ---------- Debug logs ----------
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-# Allow .env.example to be committed as a template
-!.env.example
-
-# vercel
-.vercel
-
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-local-*
-.claude
-.z-ai-config
 *.log
 dev.log
 dev.out.log
-test
-prompt
-
 server.log
-# Skills directory
-/skills/
 
-# Database local (jangan commit ke production)
+# ---------- Environment (PENTING! jangan commit) ----------
+.env
+.env.local
+.env.*.local
+# Allow .env.example sebagai template
+!.env.example
+
+# ---------- Vercel ----------
+.vercel
+
+# ---------- TypeScript ----------
+*.tsbuildinfo
+next-env.d.ts
+
+# ---------- Database lokal (SQLite dev sandbox) ----------
 db/*.db
 db/*.db-journal
 db/*.db-wal
 db/*.db-shm
 
-# Worklog internal
+# ---------- Sandbox-only files (jangan commit ke repo production) ----------
 worklog.md
-
-# Z scripts
 .zscripts/
+.z-ai-config
+.claude
+local-*
+prompt
+test
+skills/
+
+# Folder sandbox yang tidak relevan untuk Vercel deployment
+/download/
+/examples/
+/mini-services/
+/tests/
+Caddyfile
+
+# ---------- Upload ----------
+/upload/
