@@ -13,10 +13,9 @@ import { CatchGame } from '@/components/nusa/games/CatchGame'
 import { ShopGame } from '@/components/nusa/games/ShopGame'
 import { PathGame } from '@/components/nusa/games/PathGame'
 import { BattleGame } from '@/components/nusa/games/BattleGame'
-import { TeamBattleGame } from '@/components/nusa/games/TeamBattleGame'
 import { ChoiceGame, StoryGame, PatternGame, BuildGame } from '@/components/nusa/screens/GameScreen'
 
-type ArcadeGameType = 'catch' | 'shop' | 'path' | 'battle' | 'choice' | 'story' | 'pattern' | 'build' | 'team_battle'
+type ArcadeGameType = 'catch' | 'shop' | 'path' | 'battle' | 'choice' | 'story' | 'pattern' | 'build'
 
 interface ArcadeGameDef {
   id: ArcadeGameType
@@ -80,18 +79,6 @@ const ARCADE_GAMES: ArcadeGameDef[] = [
     defaultSubcategory: 'perkalian',
     difficulty: 'medium',
     hint: 'Jawab benar = serang musuh. Salah = kamu terluka',
-  },
-  {
-    id: 'team_battle',
-    title: 'Pertarungan Kelompok',
-    description: 'Tim Merah vs Tim Biru! Cepat-cepatan jawab!',
-    emoji: '🛡️',
-    color: 'from-rose-500 via-purple-500 to-sky-500',
-    category: 'numerik',
-    glow: 'pink',
-    defaultSubcategory: 'soal_cerita',
-    difficulty: 'hard',
-    hint: 'Cepat jawab sebelum AI selesai berpikir! Benar = serang musuh',
   },
   {
     id: 'story',
@@ -213,7 +200,6 @@ export function ArcadeScreen() {
       case 'shop': return <ShopGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'path': return <PathGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'battle': return <BattleGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
-      case 'team_battle': return <TeamBattleGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'story': return <StoryGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'build': return <BuildGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
       case 'pattern': return <PatternGame key={q.id} question={q} onAnswer={handleAnswer} disabled={!!feedback} />
