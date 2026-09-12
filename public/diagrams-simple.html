@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  body { margin: 0; padding: 40px; background: #FAFBFC; font-family: -apple-system, sans-serif; }
+  .diagram { background: white; padding: 30px; margin: 0 auto 40px; max-width: 900px; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  h2 { color: #0c4a6e; margin-bottom: 20px; font-size: 22px; border-bottom: 2px solid #E0F2FE; padding-bottom: 10px; }
+  .mermaid { display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+
+<div class="diagram">
+  <h2>📊 Use Case Diagram — NUSA LEARN</h2>
+  <div class="mermaid">
+flowchart LR
+    Siswa(["🧒 Siswa"])
+    Admin(["👨‍🏫 Admin/Guru"])
+
+    subgraph SYS["NUSA LEARN"]
+      direction TB
+      UC1[("Main Game & Mini-Games")]
+      UC2[("Multiplayer Tim")]
+      UC3[("Daily Challenge")]
+      UC4[("Lihat Progress & Rewards")]
+      UC5[("Edit Profile & Settings")]
+      UC6[("Minta Hint NOVA")]
+      UC7[("Login Admin")]
+      UC8[("CRUD Soal")]
+      UC9[("Lihat Stats & Sesi")]
+    end
+
+    Siswa --- UC1 & UC2 & UC3 & UC4 & UC5 & UC6
+    Admin --- UC7 & UC8 & UC9
+    UC1 -.->|"extends"| UC6
+
+    classDef actor fill:#DBEAFE,stroke:#3B82F6,stroke-width:2px,color:#1E40AF
+    classDef uc fill:#F0F9FF,stroke:#0EA5E9,stroke-width:1.5px,color:#0C4A6E
+    classDef adminUC fill:#FEF3C7,stroke:#F59E0B,stroke-width:1.5px,color:#78350F
+    class Siswa,Admin actor
+    class UC1,UC2,UC3,UC4,UC5,UC6 uc
+    class UC7,UC8,UC9 adminUC
+  </div>
+</div>
+
+<div class="diagram">
+  <h2>🗄️ ERD — NUSA LEARN Database</h2>
+  <div class="mermaid">
+erDiagram
+    PLAYER ||--o{ SESSION_LOG : "membuat"
+    PLAYER }o--o{ BADGE : "memiliki"
+    QUESTION ||--o{ SESSION_LOG : "dipakai"
+
+    PLAYER {
+        string id PK
+        string name
+        int grade
+        int xp
+        int coins
+        int stars
+        string badges
+        string characterJson
+    }
+
+    QUESTION {
+        string id PK
+        int grade
+        string category
+        string difficulty
+        string gameType
+        string question
+        string answer
+        string hints
+    }
+
+    BADGE {
+        string id PK
+        string name
+        string icon
+        string category
+    }
+
+    SESSION_LOG {
+        string id PK
+        string playerName
+        string area
+        int correct
+        int wrong
+        int xpGained
+        datetime createdAt
+    }
+  </div>
+</div>
+
+</body>
+</html>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
