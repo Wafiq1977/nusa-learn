@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  body { margin: 0; padding: 30px; background: white; font-family: -apple-system, sans-serif; }
+  .diagram { background: white; padding: 24px; margin: 0 auto; max-width: 1100px; border-radius: 12px; border: 1px solid #E2E8F0; }
+  h2 { color: #0c4a6e; margin-bottom: 16px; font-size: 20px; }
+  .mermaid { display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+
+<div class="diagram">
+  <h2>📊 Use Case Diagram — NUSA LEARN (Detail)</h2>
+  <div class="mermaid">
+flowchart LR
+    Siswa(["🧒 Siswa SD<br/>(Kelas 1-6)"])
+    Admin(["👨‍🏫 Admin / Guru /<br/>Orang Tua"])
+    NOVA(["🤖 Sistem AI<br/>(NOVA Robot)"])
+
+    subgraph SYS["🎮 NUSA LEARN — Game Edukasi"]
+        direction TB
+
+        subgraph ONB["🎯 Onboarding & Setup"]
+            O1[("📋 Input Nama<br/>Pemain")]
+            O2[("🎓 Pilih Kelas<br/>(1-6)")]
+            O3[("🎨 Kustomisasi<br/>Karakter")]
+        end
+
+        subgraph SOLO["🚀 Mode Single Player"]
+            S1[("🗺️ Jelajahi<br/>World Map")]
+            S2[("📖 Mainkan Level<br/>(mini-games)")]
+            S3[("🎯 Daily<br/>Challenge")]
+            S4[("📚 Practice<br/>Mode")]
+            S5[("🕹️ Arcade<br/>(8 mini-games)")]
+        end
+
+        subgraph MP["👥 Mode Multiplayer"]
+            M1[("👥 Setup Tim<br/>(2-4 tim)")]
+            M2[("🔄 Mode<br/>Bergiliran")]
+            M3[("⚡ Mode<br/>Siapa Cepat")]
+            M4[("⏱️ Timer<br/>Menjawab")]
+        end
+
+        subgraph PROG["📈 Tracking & Reward"]
+            P1[("📈 Lihat Progress<br/>(My Journey)")]
+            P2[("🏆 Lihat Rewards<br/>(Badge/Koin)")]
+            P3[("👤 Edit Profile<br/>& Karakter")]
+            P4[("⚙️ Ubah Settings<br/>(Sound/TV)")]
+            P5[("💡 Minta Petunjuk<br/>NOVA")]
+            P6[("🏆 Dapatkan XP,<br/>Stars, Coins, Badges")]
+        end
+
+        subgraph ADM["🛠️ Fitur Admin"]
+            A1[("🔐 Login Admin<br/>(password)")]
+            A2[("📊 Dashboard<br/>Stats")]
+            A3[("➕ Tambah Soal")]
+            A4[("✏️ Edit Soal")]
+            A5[("🗑️ Hapus Soal")]
+            A6[("🔍 Filter &<br/>Search Soal")]
+            A7[("📋 Lihat Sesi<br/>Belajar")]
+            A8[("👥 Lihat Pemain<br/>Terbaru")]
+        end
+
+        subgraph AIF["🤖 Sistem AI (NOVA)"]
+            N1[("💡 Generate Hint<br/>(LLM-powered)")]
+            N2[("🧠 Adaptive<br/>Difficulty")]
+            N3[("😊 Feedback<br/>Positif")]
+        end
+    end
+
+    Siswa --- O1 & O2 & O3 & S1 & S2 & S3 & S4 & S5 & M1 & M2 & M3 & M4 & P1 & P2 & P3 & P4 & P5 & P6
+    Admin --- A1 & A2 & A3 & A4 & A5 & A6 & A7 & A8
+    NOVA --- N1 & N2 & N3
+
+    S2 -.->|"extends"| P5
+    M1 -.->|"includes"| M2 & M3
+    M2 -.->|"includes"| M4
+    M3 -.->|"includes"| M4
+    A3 & A4 & A5 -.->|"includes"| A6
+
+    classDef actor fill:#DBEAFE,stroke:#3B82F6,stroke-width:2px,color:#1E40AF
+    classDef uc fill:#F0F9FF,stroke:#0EA5E9,stroke-width:1.5px,color:#0C4A6E
+    classDef adminUC fill:#FEF3C7,stroke:#F59E0B,stroke-width:1.5px,color:#78350F
+    classDef aiUC fill:#F3E8FF,stroke:#A855F7,stroke-width:1.5px,color:#581C87
+    class Siswa,Admin,NOVA actor
+    class O1,O2,O3,S1,S2,S3,S4,S5,M1,M2,M3,M4,P1,P2,P3,P4,P5,P6 uc
+    class A1,A2,A3,A4,A5,A6,A7,A8 adminUC
+    class N1,N2,N3 aiUC
+  </div>
+</div>
+
+</body>
+</html>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis', padding: 30, nodeSpacing: 60, rankSpacing: 60 }
+  });
+</script>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  body { margin: 0; padding: 30px; background: white; font-family: -apple-system, sans-serif; }
+  .diagram { background: white; padding: 24px; margin: 0 auto; max-width: 1100px; border-radius: 12px; border: 1px solid #E2E8F0; }
+  h2 { color: #0c4a6e; margin-bottom: 16px; font-size: 20px; }
+  .mermaid { display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+
+<div class="diagram">
+  <h2>🗄️ ERD — NUSA LEARN Database (Detail)</h2>
+  <div class="mermaid">
+erDiagram
+    PLAYER ||--o{ SESSION_LOG : "membuat"
+    PLAYER }o--o{ BADGE : "memiliki"
+    QUESTION ||--o{ SESSION_LOG : "dipakai"
+
+    PLAYER {
+        string id PK "cuid auto"
+        string name "Nama pemain"
+        int grade "Kelas 1-6"
+        int level "Explorer rank 1-5"
+        int xp "Total XP"
+        int coins "Koin untuk beli"
+        int stars "Bintang reward"
+        string characterJson "JSON: rambut/pakaian/aksesori"
+        string settingsJson "JSON: sound/music/TV"
+        string unlockedAreas "JSON: area terbuka"
+        string completedLevels "JSON: level selesai"
+        string skillProgress "JSON: progress per skill"
+        string badges "JSON: badge IDs dimiliki"
+        string statsJson "JSON: total/correct/wrong"
+        string lastDailyDate "YYYY-MM-DD"
+        int dailyStreak "Hari beruntun"
+        datetime createdAt "auto"
+        datetime updatedAt "auto"
+    }
+
+    QUESTION {
+        string id PK "mis. NUM-G1-001"
+        int grade "Kelas 1-6"
+        string category "numerik atau literasi"
+        string subcategory "penjumlahan, ide_pokok, dll"
+        string difficulty "easy, medium, hard"
+        string gameType "9 jenis mini-game"
+        string question "Teks soal utama"
+        string story "Cerita opsional literasi"
+        string highlight "JSON: kata kunci"
+        string options "JSON: array opsi"
+        string answer "Jawaban benar"
+        string explanation "Penjelasan jawaban"
+        string hints "JSON: 3 tier hint"
+        int xpReward "15-50 XP"
+        datetime createdAt "auto"
+    }
+
+    BADGE {
+        string id PK "mis. math_explorer"
+        string name "Nama badge"
+        string description "Deskripsi achievement"
+        string icon "Emoji icon"
+        string category "numerik/literasi/general"
+        string requirement "Syarat buka badge"
+        datetime createdAt "auto"
+    }
+
+    SESSION_LOG {
+        string id PK "cuid auto"
+        string playerName "Nama pemain"
+        int grade "Kelas saat sesi"
+        string area "World area mis. number_city"
+        string level "Level key mis. nc-1"
+        string category "numerik atau literasi"
+        int correct "Jawaban benar"
+        int wrong "Jawaban salah"
+        int xpGained "XP didapat"
+        int starsGained "Bintang didapat"
+        int duration "Durasi detik"
+        datetime createdAt "auto"
+    }
+  </div>
+</div>
+
+</body>
+</html>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    er: { useMaxWidth: true, fontSize: 14 }
+  });
+</script>
