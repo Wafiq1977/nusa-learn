@@ -79,120 +79,109 @@ export function GameShell({
     >
       <ParticleBackground variant={bgVariant} />
 
-      {/* HUD top bar — collapsible */}
+      {/* HUD top bar — collapsible (full hidden saat collapsed) */}
       {!hideHud && (
-        <header className="sticky top-0 z-30 w-full px-2 pt-2 sm:px-4 sm:pt-3 2xl:px-5 2xl:pt-4">
-          <AnimatePresence initial={false} mode="wait">
-            {hudCollapsed ? (
-              <>
-              <motion.div
-                key="collapsed"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="mx-auto flex max-w-5xl items-center justify-between gap-2 rounded-2xl px-2 py-1.5 sm:px-3 sm:py-2 glass"
+        <>
+          {/* Expanded HUD */}
+          <AnimatePresence initial={false}>
+            {!hudCollapsed && (
+              <motion.header
+                key="expanded-hud"
+                initial={{ y: -60, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -60, opacity: 0 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="sticky top-0 z-30 w-full px-2 pt-2 sm:px-4 sm:pt-3 2xl:px-5 2xl:pt-4"
               >
-                <div className="flex items-center gap-2">
-                  <button
-                    aria-label="Buka panel"
-                    onClick={toggleHud}
-                    className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-9 sm:w-9"
-                  >
-                    <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </button>
-                  {name && (
-                    <div className="flex items-center gap-1.5 text-xs sm:text-sm">
-                      <span className="text-base sm:text-lg 2xl:text-xl">{rank.emoji}</span>
-                      <span className="font-bold text-slate-700">{name}</span>
-                      <span className="hidden text-slate-400 sm:inline">·</span>
-                      <span className="hidden text-[10px] text-slate-500 sm:text-xs 2xl:text-sm sm:inline">{rank.name}</span>
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center gap-1 sm:gap-1.5 2xl:gap-2.5">
-                  <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] font-bold text-amber-500 sm:text-xs 2xl:text-sm">⭐ {stars}</span>
-                  <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] font-bold text-cyan-600 sm:text-xs 2xl:text-sm">✨ {xp}</span>
-                </div>
-              </motion.div>
-              </>
-            ) : (
-              <>
-              <motion.div
-                key="expanded"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="mx-auto flex max-w-5xl items-center justify-between gap-2 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 2xl:px-5 2xl:py-4 glass"
-              >
-                <div className="flex items-center gap-2">
-                  {(showBack || view !== 'splash') && view !== 'home' && (
-                    <button
-                      aria-label="Kembali"
-                      onClick={() => {
-                        if (soundOn) playSound('click')
-                        goBack()
-                      }}
-                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
-                    >
-                      <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 2xl:h-7 2xl:w-7" />
-                    </button>
-                  )}
-                  {showHome && view !== 'home' && (
-                    <button
-                      aria-label="Beranda"
-                      onClick={() => {
-                        if (soundOn) playSound('click')
-                        goHome()
-                      }}
-                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
-                    >
-                      <Home className="h-5 w-5 sm:h-6 sm:w-6 2xl:h-7 2xl:w-7" />
-                    </button>
-                  )}
-                  {name && (
-                    <div className="flex items-center gap-2 text-xs sm:text-sm 2xl:text-base">
-                      <span className="text-lg sm:text-xl 2xl:text-2xl">{rank.emoji}</span>
-                      <div className="leading-tight">
-                        <div className="font-bold text-slate-700">{name}</div>
-                        <div className="text-[10px] text-slate-500 sm:text-xs 2xl:text-sm">{rank.name}</div>
+                <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 2xl:px-5 2xl:py-4 glass">
+                  <div className="flex items-center gap-2">
+                    {(showBack || view !== 'splash') && view !== 'home' && (
+                      <button
+                        aria-label="Kembali"
+                        onClick={() => {
+                          if (soundOn) playSound('click')
+                          goBack()
+                        }}
+                        className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                      >
+                        <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 2xl:h-7 2xl:w-7" />
+                      </button>
+                    )}
+                    {showHome && view !== 'home' && (
+                      <button
+                        aria-label="Beranda"
+                        onClick={() => {
+                          if (soundOn) playSound('click')
+                          goHome()
+                        }}
+                        className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                      >
+                        <Home className="h-5 w-5 sm:h-6 sm:w-6 2xl:h-7 2xl:w-7" />
+                      </button>
+                    )}
+                    {name && (
+                      <div className="flex items-center gap-2 text-xs sm:text-sm 2xl:text-base">
+                        <span className="text-lg sm:text-xl 2xl:text-2xl">{rank.emoji}</span>
+                        <div className="leading-tight">
+                          <div className="font-bold text-slate-700">{name}</div>
+                          <div className="text-[10px] text-slate-500 sm:text-xs 2xl:text-sm">{rank.name}</div>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
 
-                <div className="flex items-center gap-1.5 sm:gap-2.5 2xl:gap-3">
-                  <HudPill icon="⭐" value={stars} color="text-amber-500" />
-                  <HudPill icon="🪙" value={coins} color="text-amber-600" />
-                  <HudPill icon="✨" value={xp} valueClass="text-gradient-cyan font-bold" color="text-cyan-600" />
-                  {showSettings && (
+                  <div className="flex items-center gap-1.5 sm:gap-2.5 2xl:gap-3">
+                    <HudPill icon="⭐" value={stars} color="text-amber-500" />
+                    <HudPill icon="🪙" value={coins} color="text-amber-600" />
+                    <HudPill icon="✨" value={xp} valueClass="text-gradient-cyan font-bold" color="text-cyan-600" />
+                    {showSettings && (
+                      <button
+                        aria-label="Pengaturan"
+                        onClick={() => {
+                          if (soundOn) playSound('click')
+                          setView('settings')
+                        }}
+                        className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                      >
+                        <SettingsIcon className="h-4 w-4 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
+                      </button>
+                    )}
+                    {/* Collapse toggle button */}
                     <button
-                      aria-label="Pengaturan"
-                      onClick={() => {
-                        if (soundOn) playSound('click')
-                        setView('settings')
-                      }}
-                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                      aria-label="Tutup panel"
+                      onClick={toggleHud}
+                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-200/70 text-slate-600 hover:bg-slate-200 active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                      title="Sembunyikan panel agar tidak mengganggu"
                     >
-                      <SettingsIcon className="h-4 w-4 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
+                      <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
                     </button>
-                  )}
-                  {/* Collapse toggle button */}
-                  <button
-                    aria-label="Tutup panel"
-                    onClick={toggleHud}
-                    className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-200/70 text-slate-600 hover:bg-slate-200 active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
-                    title="Sembunyikan panel agar tidak mengganggu"
-                  >
-                    <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
-                  </button>
+                  </div>
                 </div>
-              </motion.div>
-              </>
+              </motion.header>
             )}
           </AnimatePresence>
-        </header>
+
+          {/* Floating expand button (muncul saat HUD collapsed — benar-benar hilang penuh) */}
+          <AnimatePresence>
+            {hudCollapsed && (
+              <motion.button
+                key="floating-expand"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+                onClick={toggleHud}
+                aria-label="Tampilkan panel"
+                title="Tampilkan panel (⭐ ✨ 🪙 & navigasi)"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="fixed right-2 top-2 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-cyan-600 shadow-lg backdrop-blur-md hover:bg-white sm:h-11 sm:w-11 2xl:h-14 2xl:w-14 2xl:text-2xl"
+              >
+                <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6 2xl:h-7 2xl:w-7" />
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </>
       )}
 
       <main className="relative z-10 flex-1 px-2 pb-6 pt-3 sm:px-4 sm:pb-8 sm:pt-4 2xl:px-6 2xl:pb-10 2xl:pt-6">
