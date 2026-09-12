@@ -34,7 +34,7 @@ export function RewardsScreen() {
       </motion.div>
 
       {/* Wallet summary */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2.5 sm:gap-3 2xl:gap-4">
         <GlassCard glow="cyan" className="p-4 text-center">
           <div className="text-3xl">✨</div>
           <div className="text-2xl font-black text-cyan-600">{xp.toLocaleString('id-ID')}</div>
@@ -55,7 +55,7 @@ export function RewardsScreen() {
       {/* Badges grid */}
       <div>
         <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-700">Badge ({earnedBadges.length}/{allBadges.length})</h3>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 2xl:gap-4">
           {allBadges.map((b, i) => {
             const earned = earnedBadges.includes(b.id)
             return (

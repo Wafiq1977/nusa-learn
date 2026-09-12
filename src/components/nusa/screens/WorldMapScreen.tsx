@@ -51,7 +51,7 @@ export function WorldMapScreen() {
       {/* The map */}
       <div
         className="relative mx-auto w-full max-w-3xl"
-        style={{ aspectRatio: '4/3' }}
+        style={{ aspectRatio: '4/3', minHeight: '50dvh', maxHeight: '80dvh' }}
       >
         {/* SVG connectors */}
         <svg className="absolute inset-0 h-full w-full" aria-hidden="true">

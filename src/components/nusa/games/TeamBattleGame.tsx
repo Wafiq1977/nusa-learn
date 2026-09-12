@@ -212,7 +212,7 @@ export function TeamBattleGame({ question, onAnswer, disabled }: TeamBattleGameP
       {/* Battle arena */}
       <div
         className="relative w-full overflow-hidden rounded-3xl border-2 border-rose-300 bg-gradient-to-b from-indigo-100 via-purple-50 to-rose-100"
-        style={{ aspectRatio: '16/9', minHeight: 320 }}
+        style={{ aspectRatio: '16/9', minHeight: '45dvh', maxHeight: '70dvh' }}
       >
         {/* Team labels (top) */}
         <div className="absolute left-3 right-3 top-3 flex items-center justify-between gap-3 z-20">

@@ -163,7 +163,7 @@ export function ShopGame({ question, onAnswer, disabled }: ShopGameProps) {
       {/* Shop scene */}
       <div
         className="relative w-full overflow-hidden rounded-3xl border-2 border-amber-300 bg-gradient-to-b from-amber-50 via-orange-50 to-yellow-50"
-        style={{ aspectRatio: '16/9', minHeight: 280 }}
+        style={{ aspectRatio: '16/9', minHeight: '40dvh', maxHeight: '65dvh' }}
       >
         {/* Floor */}
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-amber-200 to-amber-100" />

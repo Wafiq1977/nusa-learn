@@ -217,7 +217,7 @@ function AdminDashboard({ token, onLogout }: { token: string; onLogout: () => vo
       </motion.div>
 
       {/* Tabs */}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 2xl:gap-4">
         <TabButton active={tab === 'dashboard'} onClick={() => setTab('dashboard')} icon={<BarChart3 className="h-4 w-4" />} label="Dashboard" />
         <TabButton active={tab === 'questions'} onClick={() => setTab('questions')} icon={<BookOpen className="h-4 w-4" />} label="Soal" />
         <TabButton active={tab === 'sessions'} onClick={() => setTab('sessions')} icon={<Activity className="h-4 w-4" />} label="Sesi" />

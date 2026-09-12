@@ -94,7 +94,7 @@ export function BattleGame({ question, onAnswer, disabled }: BattleGameProps) {
       {/* Battle scene */}
       <div
         className="relative w-full overflow-hidden rounded-3xl border-2 border-rose-300 bg-gradient-to-b from-indigo-100 via-purple-50 to-rose-100"
-        style={{ aspectRatio: '16/9', minHeight: 260 }}
+        style={{ aspectRatio: '16/9', minHeight: '40dvh', maxHeight: '60dvh' }}
       >
         {/* Player side (left) */}
         <motion.div

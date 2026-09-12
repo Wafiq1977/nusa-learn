@@ -73,7 +73,7 @@ export function ProgressScreen() {
         initial="hidden"
         animate="show"
         variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.08 } } }}
-        className="grid grid-cols-2 gap-3 sm:grid-cols-4"
+        className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 2xl:gap-4"
       >
         <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Total XP" value={xp} glow="cyan" />
         <StatCard icon={<Target className="h-5 w-5" />} label="Akurasi" value={`${accuracy}%`} glow="emerald" />

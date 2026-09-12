@@ -150,7 +150,7 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
       <div
         ref={playAreaRef}
         className="relative w-full overflow-hidden rounded-3xl border-2 border-cyan-300 bg-gradient-to-b from-sky-100 via-cyan-50 to-emerald-100"
-        style={{ aspectRatio: '3/4', minHeight: 380 }}
+        style={{ aspectRatio: '3/4', minHeight: '60dvh', maxHeight: '85dvh' }}
       >
         {/* Background grid */}
         <div className="pointer-events-none absolute inset-0 opacity-30">

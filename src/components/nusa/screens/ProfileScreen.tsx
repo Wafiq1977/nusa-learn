@@ -109,7 +109,7 @@ export function ProfileScreen() {
       <GlassCard className="p-5">
         <div className="mb-2 text-sm font-bold uppercase tracking-wide text-slate-700">Kelas SD</div>
         <p className="mb-3 text-xs text-slate-500">Materi akan menyesuaikan kelas yang kamu pilih.</p>
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 2xl:gap-3">
           {GRADES.map((g) => (
             <button
               key={g}

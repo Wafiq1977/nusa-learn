@@ -216,7 +216,7 @@ export function ArcadeScreen() {
       </motion.div>
 
       {/* Game grid */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 2xl:gap-4">
         {ARCADE_GAMES.map((g, i) => (
           <motion.div
             key={g.id}
@@ -227,7 +227,7 @@ export function ArcadeScreen() {
           >
             <GlassCard
               glow={g.glow}
-              className="flex h-full min-h-44 cursor-pointer flex-col items-center gap-2 p-4 text-center"
+              className="flex h-full min-h-36 cursor-pointer flex-col items-center gap-2 p-3 text-center sm:min-h-44 sm:p-4 2xl:min-h-52 2xl:p-5"
               onClick={() => handleStart(g)}
               role="button"
               tabIndex={0}

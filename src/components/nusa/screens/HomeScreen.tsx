@@ -137,7 +137,7 @@ export function HomeScreen() {
           hidden: { opacity: 0 },
           show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.2 } },
         }}
-        className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4"
+        className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4 2xl:grid-cols-4 2xl:gap-5"
       >
         <MenuCard
           icon={<Compass className="h-6 w-6" />}
@@ -273,7 +273,7 @@ function MenuCard({
     >
       <GlassCard
         glow={glow === 'pink' ? 'purple' : glow}
-        className="flex h-full min-h-32 cursor-pointer flex-col items-center justify-center gap-2 p-4 text-center"
+        className="flex h-full min-h-32 cursor-pointer flex-col items-center justify-center gap-2 p-3 text-center sm:p-4 2xl:min-h-44 2xl:p-5"
         onClick={onClick}
         role="button"
         tabIndex={0}

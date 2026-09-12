@@ -124,7 +124,7 @@ export function PathGame({ question, onAnswer, disabled }: PathGameProps) {
       {/* Path area */}
       <div
         className="relative w-full overflow-hidden rounded-3xl border-2 border-emerald-300 bg-gradient-to-b from-emerald-50 via-teal-50 to-sky-100"
-        style={{ aspectRatio: '4/3', minHeight: 320 }}
+        style={{ aspectRatio: '4/3', minHeight: '50dvh', maxHeight: '75dvh' }}
       >
         {/* Background mountains/clouds decoration */}
         <div className="pointer-events-none absolute inset-0 opacity-40">

@@ -165,7 +165,7 @@ export function MultiplayerSetupScreen() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-4 2xl:gap-4">
           {teams.map((t, i) => {
             const p = TEAM_PALETTE[t.paletteIndex]
             return (
@@ -211,7 +211,7 @@ export function MultiplayerSetupScreen() {
           <Sparkles className="h-4 w-4 2xl:h-5 2xl:w-5" /> Pengaturan Permainan
         </h3>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-4 2xl:gap-4">
           {/* Grade */}
           <Field label="Kelas">
             <select

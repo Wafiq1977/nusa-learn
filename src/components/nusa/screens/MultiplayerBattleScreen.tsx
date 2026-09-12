@@ -399,7 +399,7 @@ export function MultiplayerBattleScreen() {
         </div>
 
         {/* Live scoreboard */}
-        <div className={`grid grid-cols-${Math.min(teams.length, 4)} gap-2 sm:gap-3`} style={{ gridTemplateColumns: `repeat(${Math.min(teams.length, 4)}, minmax(0, 1fr))` }}>
+        <div className="grid gap-2 sm:gap-3 2xl:gap-4" style={{ gridTemplateColumns: `repeat(${Math.min(teams.length, 4)}, minmax(0, 1fr))` }}>
           {teams.map((t, i) => {
             const p = TEAM_PALETTE[t.paletteIndex]
             const isActive = config.roundMode === 'turn' && i === currentTeamIdx
@@ -615,7 +615,7 @@ export function MultiplayerBattleScreen() {
           <div className="mb-2 text-center text-xs font-bold uppercase tracking-wide text-slate-600 2xl:text-sm">
             ⚡ Tekan tombol tim kamu dulu untuk menjawab soal ini!
           </div>
-          <div className={`grid grid-cols-${Math.min(teams.length, 4)} gap-2 2xl:gap-3`} style={{ gridTemplateColumns: `repeat(${Math.min(teams.length, 4)}, minmax(0, 1fr))` }}>
+          <div className="grid gap-2 2xl:gap-3" style={{ gridTemplateColumns: `repeat(${Math.min(teams.length, 4)}, minmax(0, 1fr))` }}>
             {teams.map((t, i) => {
               const p = TEAM_PALETTE[t.paletteIndex]
               return (

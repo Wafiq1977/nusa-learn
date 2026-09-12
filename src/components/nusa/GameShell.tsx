@@ -1,10 +1,10 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { type ReactNode, useEffect } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { useGameStore, getRankFromXp } from '@/store/gameStore'
 import { ParticleBackground } from './ParticleBackground'
-import { Home, ChevronLeft, Settings as SettingsIcon } from 'lucide-react'
+import { Home, ChevronLeft, Settings as SettingsIcon, ChevronDown, ChevronUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { playSound } from '@/lib/nusa/sound'
 
@@ -17,6 +17,9 @@ interface GameShellProps {
   footer?: ReactNode
   hideHud?: boolean
 }
+
+// Views where HUD auto-collapses (games, battle) — kids can focus on play
+const AUTO_COLLAPSE_VIEWS = ['game', 'multiplayer_battle']
 
 export function GameShell({
   children,
@@ -39,6 +42,10 @@ export function GameShell({
   const soundOn = useGameStore((s) => s.settings.sound)
   const tvMode = useGameStore((s) => s.settings.tvMode)
 
+  // HUD collapse state — auto-collapse in game views
+  const [hudCollapsed, setHudCollapsed] = useState(false)
+  const [prevView, setPrevView] = useState<string>('')
+
   useEffect(() => {
     // Apply reduce-motion class globally
     const reduce = useGameStore.getState().settings.reduceMotion || !useGameStore.getState().settings.animations
@@ -46,6 +53,20 @@ export function GameShell({
     // Apply TV mode class globally
     document.documentElement.classList.toggle('tv-mode', useGameStore.getState().settings.tvMode)
   }, [tvMode])
+
+  // Auto-collapse/expand HUD when view changes
+  useEffect(() => {
+    if (view !== prevView) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setHudCollapsed(AUTO_COLLAPSE_VIEWS.includes(view))
+      setPrevView(view)
+    }
+  }, [view, prevView])
+
+  const toggleHud = () => {
+    if (soundOn) playSound('click')
+    setHudCollapsed((c) => !c)
+  }
 
   return (
     <div
@@ -58,68 +79,123 @@ export function GameShell({
     >
       <ParticleBackground variant={bgVariant} />
 
-      {/* HUD top bar */}
+      {/* HUD top bar — collapsible */}
       {!hideHud && (
-        <header className="sticky top-0 z-30 w-full px-3 pt-3 sm:px-5 sm:pt-4">
-          <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 rounded-2xl px-3 py-2 sm:px-4 glass">
-            <div className="flex items-center gap-2">
-              {(showBack || view !== 'splash') && view !== 'home' && (
-                <button
-                  aria-label="Kembali"
-                  onClick={() => {
-                    if (soundOn) playSound('click')
-                    goBack()
-                  }}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-              )}
-              {showHome && view !== 'home' && (
-                <button
-                  aria-label="Beranda"
-                  onClick={() => {
-                    if (soundOn) playSound('click')
-                    goHome()
-                  }}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition"
-                >
-                  <Home className="h-5 w-5" />
-                </button>
-              )}
-              {name && (
-                <div className="flex items-center gap-2 text-xs sm:text-sm">
-                  <span className="text-lg sm:text-xl">{rank.emoji}</span>
-                  <div className="leading-tight">
-                    <div className="font-bold text-slate-700">{name}</div>
-                    <div className="text-[10px] text-slate-500 sm:text-xs">{rank.name}</div>
-                  </div>
+        <header className="sticky top-0 z-30 w-full px-2 pt-2 sm:px-4 sm:pt-3 2xl:px-5 2xl:pt-4">
+          <AnimatePresence initial={false} mode="wait">
+            {hudCollapsed ? (
+              <>
+              <motion.div
+                key="collapsed"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="mx-auto flex max-w-5xl items-center justify-between gap-2 rounded-2xl px-2 py-1.5 sm:px-3 sm:py-2 glass"
+              >
+                <div className="flex items-center gap-2">
+                  <button
+                    aria-label="Buka panel"
+                    onClick={toggleHud}
+                    className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-9 sm:w-9"
+                  >
+                    <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </button>
+                  {name && (
+                    <div className="flex items-center gap-1.5 text-xs sm:text-sm">
+                      <span className="text-base sm:text-lg 2xl:text-xl">{rank.emoji}</span>
+                      <span className="font-bold text-slate-700">{name}</span>
+                      <span className="hidden text-slate-400 sm:inline">·</span>
+                      <span className="hidden text-[10px] text-slate-500 sm:text-xs 2xl:text-sm sm:inline">{rank.name}</span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+                <div className="flex items-center gap-1 sm:gap-1.5 2xl:gap-2.5">
+                  <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] font-bold text-amber-500 sm:text-xs 2xl:text-sm">⭐ {stars}</span>
+                  <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] font-bold text-cyan-600 sm:text-xs 2xl:text-sm">✨ {xp}</span>
+                </div>
+              </motion.div>
+              </>
+            ) : (
+              <>
+              <motion.div
+                key="expanded"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="mx-auto flex max-w-5xl items-center justify-between gap-2 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 2xl:px-5 2xl:py-4 glass"
+              >
+                <div className="flex items-center gap-2">
+                  {(showBack || view !== 'splash') && view !== 'home' && (
+                    <button
+                      aria-label="Kembali"
+                      onClick={() => {
+                        if (soundOn) playSound('click')
+                        goBack()
+                      }}
+                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                    >
+                      <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 2xl:h-7 2xl:w-7" />
+                    </button>
+                  )}
+                  {showHome && view !== 'home' && (
+                    <button
+                      aria-label="Beranda"
+                      onClick={() => {
+                        if (soundOn) playSound('click')
+                        goHome()
+                      }}
+                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                    >
+                      <Home className="h-5 w-5 sm:h-6 sm:w-6 2xl:h-7 2xl:w-7" />
+                    </button>
+                  )}
+                  {name && (
+                    <div className="flex items-center gap-2 text-xs sm:text-sm 2xl:text-base">
+                      <span className="text-lg sm:text-xl 2xl:text-2xl">{rank.emoji}</span>
+                      <div className="leading-tight">
+                        <div className="font-bold text-slate-700">{name}</div>
+                        <div className="text-[10px] text-slate-500 sm:text-xs 2xl:text-sm">{rank.name}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
-            <div className="flex items-center gap-1.5 sm:gap-2.5">
-              <HudPill icon="⭐" value={stars} color="text-amber-500" />
-              <HudPill icon="🪙" value={coins} color="text-amber-600" />
-              <HudPill icon="✨" value={xp} valueClass="text-gradient-cyan font-bold" color="text-cyan-600" />
-              {showSettings && (
-                <button
-                  aria-label="Pengaturan"
-                  onClick={() => {
-                    if (soundOn) playSound('click')
-                    setView('settings')
-                  }}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition"
-                >
-                  <SettingsIcon className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-          </div>
+                <div className="flex items-center gap-1.5 sm:gap-2.5 2xl:gap-3">
+                  <HudPill icon="⭐" value={stars} color="text-amber-500" />
+                  <HudPill icon="🪙" value={coins} color="text-amber-600" />
+                  <HudPill icon="✨" value={xp} valueClass="text-gradient-cyan font-bold" color="text-cyan-600" />
+                  {showSettings && (
+                    <button
+                      aria-label="Pengaturan"
+                      onClick={() => {
+                        if (soundOn) playSound('click')
+                        setView('settings')
+                      }}
+                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                    >
+                      <SettingsIcon className="h-4 w-4 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
+                    </button>
+                  )}
+                  {/* Collapse toggle button */}
+                  <button
+                    aria-label="Tutup panel"
+                    onClick={toggleHud}
+                    className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-200/70 text-slate-600 hover:bg-slate-200 active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                    title="Sembunyikan panel agar tidak mengganggu"
+                  >
+                    <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
+                  </button>
+                </div>
+              </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </header>
       )}
 
-      <main className="relative z-10 flex-1 px-3 pb-6 pt-4 sm:px-5">
+      <main className="relative z-10 flex-1 px-2 pb-6 pt-3 sm:px-4 sm:pb-8 sm:pt-4 2xl:px-6 2xl:pb-10 2xl:pt-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={view}
@@ -127,7 +203,7 @@ export function GameShell({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto w-full max-w-5xl"
+            className="mx-auto w-full max-w-5xl 2xl:max-w-6xl"
           >
             {children}
           </motion.div>
@@ -135,15 +211,15 @@ export function GameShell({
       </main>
 
       {footer && (
-        <footer className="sticky bottom-0 z-30 mt-auto px-3 pb-3 sm:px-5 sm:pb-5">
-          <div className="mx-auto max-w-5xl">{footer}</div>
+        <footer className="sticky bottom-0 z-30 mt-auto px-2 pb-2 sm:px-4 sm:pb-4 2xl:px-5 2xl:pb-5">
+          <div className="mx-auto max-w-5xl 2xl:max-w-6xl">{footer}</div>
         </footer>
       )}
 
-      {/* Always-on NUSA mini footer (sticks to bottom on short pages, pushed down on long) */}
+      {/* Always-on NUSA mini footer */}
       {!footer && bgVariant === 'light' && view !== 'game' && (
-        <footer className="mt-auto px-3 pb-3 pt-2 sm:px-5 sm:pb-4">
-          <div className="mx-auto max-w-5xl text-center text-[10px] uppercase tracking-widest text-slate-400">
+        <footer className="mt-auto px-2 pb-3 pt-2 sm:px-4 sm:pb-4 2xl:px-5 2xl:pb-5">
+          <div className="mx-auto max-w-5xl 2xl:max-w-6xl text-center text-[10px] uppercase tracking-widest text-slate-400 sm:text-xs 2xl:text-sm">
             <span className="text-gradient-cyan font-bold">NUSA</span>
             <span className="text-gradient-purple font-bold"> LEARN</span>
             <span className="mx-2">·</span>
@@ -167,9 +243,9 @@ function HudPill({
   valueClass?: string
 }) {
   return (
-    <div className="flex items-center gap-1 rounded-full bg-white/70 px-2 py-1 text-xs sm:text-sm shadow-sm">
-      <span aria-hidden>{icon}</span>
-      <span className={cn('font-bold tabular-nums', valueClass ?? color)}>{value.toLocaleString('id-ID')}</span>
+    <div className="flex items-center gap-1 rounded-full bg-white/70 px-2 py-1 text-[10px] font-bold shadow-sm sm:text-xs 2xl:text-sm 2xl:px-3 2xl:py-1.5">
+      <span aria-hidden className="text-sm sm:text-base 2xl:text-lg">{icon}</span>
+      <span className={cn('tabular-nums', valueClass ?? color)}>{value.toLocaleString('id-ID')}</span>
     </div>
   )
 }

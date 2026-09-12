@@ -79,7 +79,7 @@ export function SettingsScreen() {
           <div className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-700">
             <Music className="h-4 w-4" /> Pilih Musik
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 2xl:gap-3">
             {TRACKS.map((t) => {
               const isActive = settings.musicTrack === t.id || (t.id === 'off' && (!settings.music || settings.musicTrack === 'off'))
               const isPlaying = isActive && isMusicPlaying() && t.id !== 'off'
