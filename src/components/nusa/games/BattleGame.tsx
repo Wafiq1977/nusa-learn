@@ -82,7 +82,7 @@ export function BattleGame({ question, onAnswer, disabled }: BattleGameProps) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-2 sm:gap-3">
       <div className="text-center">
         <div className="text-xs font-bold uppercase tracking-widest text-rose-600">
           ⚔️ Pertarungan Robot · {question.subcategory}
@@ -94,7 +94,7 @@ export function BattleGame({ question, onAnswer, disabled }: BattleGameProps) {
       {/* Battle scene */}
       <div
         className="relative w-full overflow-hidden rounded-3xl border-2 border-rose-300 bg-gradient-to-b from-indigo-100 via-purple-50 to-rose-100"
-        style={{ aspectRatio: '16/9', minHeight: '40dvh', maxHeight: '60dvh' }}
+        style={{ height: 'clamp(200px, 35dvh, 400px)' }}
       >
         {/* Player side (left) */}
         <motion.div

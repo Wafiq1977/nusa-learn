@@ -137,20 +137,20 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
   }, [moveLeft, moveRight])
 
   return (
-    <div className="space-y-3">
-      <div className="text-center">
-        <div className="text-xs font-bold uppercase tracking-widest text-cyan-600">
+    <div className="flex flex-col gap-2 sm:gap-3">
+      <div className="text-center flex-shrink-0">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 sm:text-xs">
           🎯 Number Catch · {question.subcategory}
         </div>
-        <h2 className="mt-1 text-xl font-bold text-slate-800 sm:text-2xl">{question.question}</h2>
-        <p className="mt-1 text-xs text-slate-500">Geser karaktermu untuk menangkap jawaban yang benar!</p>
+        <h2 className="mt-1 text-base font-bold text-slate-800 sm:text-lg md:text-xl 2xl:text-2xl">{question.question}</h2>
+        <p className="mt-0.5 text-[10px] text-slate-500 sm:text-xs">Geser karaktermu untuk menangkap jawaban yang benar!</p>
       </div>
 
-      {/* Play area */}
+      {/* Play area — flex-1 supaya adaptif, tidak fixed height */}
       <div
         ref={playAreaRef}
-        className="relative w-full overflow-hidden rounded-3xl border-2 border-cyan-300 bg-gradient-to-b from-sky-100 via-cyan-50 to-emerald-100"
-        style={{ aspectRatio: '3/4', minHeight: '60dvh', maxHeight: '85dvh' }}
+        className="relative w-full flex-1 overflow-hidden rounded-3xl border-2 border-cyan-300 bg-gradient-to-b from-sky-100 via-cyan-50 to-emerald-100 min-h-[300px] sm:min-h-[400px]"
+        style={{ height: 'clamp(300px, 50dvh, 600px)' }}
       >
         {/* Background grid */}
         <div className="pointer-events-none absolute inset-0 opacity-30">
@@ -229,12 +229,12 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
       </div>
 
       {/* Mobile controls */}
-      <div className="flex items-center justify-center gap-3">
+      <div className="flex items-center justify-center gap-3 flex-shrink-0">
         <button
           onClick={moveLeft}
           disabled={disabled || !!result}
           aria-label="Geser kiri"
-          className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 text-3xl text-white shadow-lg active:scale-95 transition disabled:opacity-50"
+          className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 text-2xl text-white shadow-lg active:scale-95 transition disabled:opacity-50 sm:h-16 sm:w-16 sm:text-3xl"
         >
           ⬅️
         </button>
@@ -242,7 +242,7 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
           onClick={moveRight}
           disabled={disabled || !!result}
           aria-label="Geser kanan"
-          className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 text-3xl text-white shadow-lg active:scale-95 transition disabled:opacity-50"
+          className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 text-2xl text-white shadow-lg active:scale-95 transition disabled:opacity-50 sm:h-16 sm:w-16 sm:text-3xl"
         >
           ➡️
         </button>

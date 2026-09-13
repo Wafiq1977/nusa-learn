@@ -149,7 +149,7 @@ export function ShopGame({ question, onAnswer, disabled }: ShopGameProps) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-2 sm:gap-3">
       <div className="text-center">
         <div className="text-xs font-bold uppercase tracking-widest text-orange-600">
           🛒 Belanja Seru · {question.subcategory}
@@ -163,7 +163,7 @@ export function ShopGame({ question, onAnswer, disabled }: ShopGameProps) {
       {/* Shop scene */}
       <div
         className="relative w-full overflow-hidden rounded-3xl border-2 border-amber-300 bg-gradient-to-b from-amber-50 via-orange-50 to-yellow-50"
-        style={{ aspectRatio: '16/9', minHeight: '40dvh', maxHeight: '65dvh' }}
+        style={{ height: 'clamp(200px, 35dvh, 450px)' }}
       >
         {/* Floor */}
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-amber-200 to-amber-100" />
