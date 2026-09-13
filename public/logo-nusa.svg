@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1E3F"/>
+      <stop offset="50%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F0F9FF"/>
+      <stop offset="100%" stop-color="#BAE6FD"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0B1E3F"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+
+  <!-- Glow halo -->
+  <circle cx="256" cy="256" r="200" fill="url(#glow)"/>
+
+  <!-- NOVA Robot -->
+  <g transform="translate(256, 200)">
+    <!-- Antenna -->
+    <line x1="0" y1="-100" x2="0" y2="-140" stroke="#94A3B8" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="0" cy="-145" r="12" fill="#22D3EE">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Ears -->
+    <circle cx="-100" cy="0" r="22" fill="#94A3B8"/>
+    <circle cx="100" cy="0" r="22" fill="#94A3B8"/>
+    <circle cx="-100" cy="0" r="10" fill="#22D3EE" opacity="0.7"/>
+    <circle cx="100" cy="0" r="10" fill="#22D3EE" opacity="0.7"/>
+
+    <!-- Body -->
+    <rect x="-100" y="-100" width="200" height="200" rx="50" fill="url(#body)" stroke="#7DD3FC" stroke-width="3"/>
+
+    <!-- Face screen -->
+    <rect x="-70" y="-60" width="140" height="100" rx="30" fill="url(#face)"/>
+
+    <!-- Eyes -->
+    <ellipse cx="-30" cy="-15" rx="14" ry="18" fill="#22D3EE"/>
+    <ellipse cx="30" cy="-15" rx="14" ry="18" fill="#22D3EE"/>
+    <circle cx="-26" cy="-20" r="5" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="34" cy="-20" r="5" fill="#FFFFFF" opacity="0.9"/>
+
+    <!-- Smile -->
+    <path d="M -30 15 Q 0 35 30 15" stroke="#22D3EE" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+    <!-- Body highlight -->
+    <rect x="-70" y="50" width="140" height="8" rx="4" fill="#22D3EE" opacity="0.2"/>
+  </g>
+
+  <!-- Text NUSA LEARN -->
+  <text x="256" y="430" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="48" font-weight="900" fill="#22D3EE">NUSA</text>
+  <text x="256" y="475" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="32" font-weight="700" fill="#A855F7">LEARN</text>
+</svg>

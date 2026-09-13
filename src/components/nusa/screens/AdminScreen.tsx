@@ -142,15 +142,16 @@ export function AdminScreen() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleLogin() }}
-                placeholder="nusa-admin"
+                placeholder="••••••••••••"
                 className="w-full rounded-2xl border-2 border-cyan-200 bg-white/80 px-4 py-3 text-slate-800 focus:border-cyan-400 focus:outline-none"
                 aria-label="Password admin"
+                autoComplete="off"
               />
               {loginError && (
                 <p className="mt-2 text-sm font-medium text-rose-600">⚠️ {loginError}</p>
               )}
               <p className="mt-2 text-[11px] text-slate-500">
-                💡 Password default: <code className="rounded bg-slate-100 px-1.5 py-0.5 font-bold text-slate-700">nusa-admin</code>. Bisa diubah via env var <code className="rounded bg-slate-100 px-1.5 py-0.5 font-bold text-slate-700">ADMIN_PASSWORD</code>.
+                🔒 Hubungi pengembang/admin untuk mendapatkan password admin. Password disimpan aman via environment variable.
               </p>
             </div>
 
