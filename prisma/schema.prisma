@@ -1,8 +1,11 @@
-// NUSA LEARN - Educational game database schema
-// Targets: elementary students grades 1-6, numerik + literasi
+// NUSA LEARN - SQLite schema (untuk dev lokal tanpa PostgreSQL)
+// Cara pakai:
+//   1. Copy file ini ke prisma/schema.prisma (overwrite)
+//   2. Set DATABASE_URL="file:./db/custom.db" di .env
+//   3. Run: bun run db:push && bun run seed
 //
-// Production: PostgreSQL (Supabase) — untuk Vercel deployment
-// Untuk dev lokal pakai SQLite, copy dari prisma/schema.sqlite.prisma
+// Setelah selesai dev lokal, restore schema.prisma ke versi PostgreSQL
+// sebelum commit & push ke GitHub (untuk deploy ke Vercel).
 
 generator client {
   provider = "prisma-client-js"

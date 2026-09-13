@@ -140,9 +140,9 @@ export function OnboardingScreen() {
                 exit={{ opacity: 0, x: -24 }}
                 className="flex flex-col items-center text-center"
               >
-                <h2 className="text-2xl font-extrabold text-gradient-cyan">Kamu kelas berapa? 🎒</h2>
-                <p className="mt-2 text-sm text-slate-600">Pilih kelasmu — materi akan menyesuaikan tingkatmu.</p>
-                <div className="mt-5 grid grid-cols-3 gap-2.5">
+                <h2 className="text-xl font-extrabold text-gradient-cyan sm:text-2xl">Kamu kelas berapa? 🎒</h2>
+                <p className="mt-2 text-xs text-slate-600 sm:text-sm">Pilih kelasmu — materi akan menyesuaikan tingkatmu.</p>
+                <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-2.5">
                   {GRADES.map((g) => (
                     <button
                       key={g.value}

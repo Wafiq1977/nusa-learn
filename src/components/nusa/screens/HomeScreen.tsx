@@ -39,8 +39,8 @@ export function HomeScreen() {
         transition={{ duration: 0.4 }}
         className="text-center sm:text-left"
       >
-        <p className="text-sm text-slate-500 sm:text-base">Selamat datang kembali di</p>
-        <h1 className="text-3xl font-black tracking-tight sm:text-4xl">
+        <p className="text-xs text-slate-500 sm:text-sm md:text-base">Selamat datang kembali di</p>
+        <h1 className="text-2xl font-black tracking-tight sm:text-3xl md:text-4xl">
           <span className="text-gradient-cyan">Halo, {name}</span>{' '}
           <motion.span
             animate={{ rotate: [0, 18, 0], scale: [1, 1.15, 1] }}
@@ -58,15 +58,15 @@ export function HomeScreen() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.45, delay: 0.1 }}
       >
-        <GlassCard glow="cyan" className="overflow-hidden p-5 sm:p-6">
-          <div className="flex items-center gap-4 sm:gap-5">
-            <div className="flex-shrink-0 rounded-2xl bg-gradient-to-br from-sky-100 to-purple-100 p-2 shadow-inner">
-              <CharacterAvatar char={character} size={84} />
+        <GlassCard glow="cyan" className="overflow-hidden p-3 sm:p-5 md:p-6">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
+            <div className="flex-shrink-0 rounded-2xl bg-gradient-to-br from-sky-100 to-purple-100 p-1.5 shadow-inner sm:p-2">
+              <CharacterAvatar char={character} size={64} />
             </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-2xl">{rank.emoji}</span>
-                <div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 text-xs sm:text-sm">
+                <span className="text-xl sm:text-2xl">{rank.emoji}</span>
+                <div className="min-w-0">
                   <div className="font-bold text-slate-800">{rank.name}</div>
                   <div className="text-xs text-slate-500">Kelas {grade} · {xp} XP</div>
                 </div>
@@ -273,17 +273,17 @@ function MenuCard({
     >
       <GlassCard
         glow={glow === 'pink' ? 'purple' : glow}
-        className="flex h-full min-h-32 cursor-pointer flex-col items-center justify-center gap-2 p-3 text-center sm:p-4 2xl:min-h-44 2xl:p-5"
+        className="flex h-full min-h-28 cursor-pointer flex-col items-center justify-center gap-1.5 p-2.5 text-center sm:min-h-32 sm:p-4 sm:gap-2 2xl:min-h-44 2xl:p-5"
         onClick={onClick}
         role="button"
         tabIndex={0}
       >
-        <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${grad} text-white shadow-lg`}>
+        <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${grad} text-white shadow-lg sm:h-14 sm:w-14 2xl:h-16 2xl:w-16`}>
           {icon}
         </div>
         <div>
-          <div className="text-base font-bold text-slate-800">{title}</div>
-          <div className="text-[11px] text-slate-500">{subtitle}</div>
+          <div className="text-sm font-bold text-slate-800 sm:text-base 2xl:text-lg">{title}</div>
+          <div className="text-[10px] text-slate-500 sm:text-[11px] 2xl:text-xs">{subtitle}</div>
         </div>
       </GlassCard>
     </motion.div>

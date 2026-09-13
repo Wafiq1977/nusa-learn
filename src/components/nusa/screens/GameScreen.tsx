@@ -117,11 +117,11 @@ export function ChoiceGame({ question, onAnswer, disabled }: BaseGameProps) {
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <div className="text-xs font-bold uppercase tracking-widest text-cyan-600">{question.subcategory}</div>
-        <h2 className="mt-2 text-2xl font-bold text-slate-800 sm:text-3xl">{question.question}</h2>
+        <div className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 sm:text-xs">{question.subcategory}</div>
+        <h2 className="mt-2 text-lg font-bold text-slate-800 sm:text-xl md:text-2xl 2xl:text-3xl">{question.question}</h2>
       </motion.div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 sm:gap-3 sm:grid-cols-2">
         {question.options.map((opt, i) => {
           const letter = String.fromCharCode(65 + i)
           const isPicked = picked === opt
@@ -140,16 +140,16 @@ export function ChoiceGame({ question, onAnswer, disabled }: BaseGameProps) {
                 if (soundOn) playSound('click')
                 onAnswer(opt)
               }}
-              className={`relative flex items-center gap-3 rounded-2xl border-2 p-4 text-left transition-all ${
+              className={`relative flex items-center gap-2.5 rounded-2xl border-2 p-3 text-left transition-all sm:gap-3 sm:p-4 ${
                 isPicked
                   ? 'border-cyan-400 bg-cyan-50 shadow-[0_6px_24px_-8px_rgba(14,165,233,0.4)]'
                   : 'border-slate-200 bg-white/80 hover:border-cyan-300'
               } ${disabled ? 'opacity-60' : 'cursor-pointer'}`}
             >
-              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-500 text-sm font-bold text-white shadow">
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-500 text-xs font-bold text-white shadow sm:h-9 sm:w-9 sm:text-sm">
                 {letter}
               </span>
-              <span className="text-base font-semibold text-slate-700 sm:text-lg">{opt}</span>
+              <span className="text-sm font-semibold text-slate-700 sm:text-base md:text-lg">{opt}</span>
             </motion.button>
           )
         })}

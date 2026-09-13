@@ -130,10 +130,10 @@ export function GameShell({
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1.5 sm:gap-2.5 2xl:gap-3">
-                    <HudPill icon="⭐" value={stars} color="text-amber-500" />
-                    <HudPill icon="🪙" value={coins} color="text-amber-600" />
-                    <HudPill icon="✨" value={xp} valueClass="text-gradient-cyan font-bold" color="text-cyan-600" />
+                  <div className="flex items-center gap-1 sm:gap-1.5 sm:gap-2.5 2xl:gap-3">
+                    <HudPill icon="⭐" value={stars} color="text-amber-500" className="hidden sm:flex" />
+                    <HudPill icon="🪙" value={coins} color="text-amber-600" className="flex" />
+                    <HudPill icon="✨" value={xp} valueClass="text-gradient-cyan font-bold" color="text-cyan-600" className="hidden sm:flex" />
                     {showSettings && (
                       <button
                         aria-label="Pengaturan"
@@ -141,7 +141,7 @@ export function GameShell({
                           if (soundOn) playSound('click')
                           setView('settings')
                         }}
-                        className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
+                        className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/70 text-slate-700 hover:bg-white active:scale-95 transition sm:h-10 sm:w-10 2xl:h-12 2xl:w-12"
                       >
                         <SettingsIcon className="h-4 w-4 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
                       </button>
@@ -225,15 +225,20 @@ function HudPill({
   value,
   color,
   valueClass,
+  className,
 }: {
   icon: string
   value: number
   color: string
   valueClass?: string
+  className?: string
 }) {
   return (
-    <div className="flex items-center gap-1 rounded-full bg-white/70 px-2 py-1 text-[10px] font-bold shadow-sm sm:text-xs 2xl:text-sm 2xl:px-3 2xl:py-1.5">
-      <span aria-hidden className="text-sm sm:text-base 2xl:text-lg">{icon}</span>
+    <div className={cn(
+      "flex items-center gap-1 rounded-full bg-white/70 px-1.5 py-0.5 text-[10px] font-bold shadow-sm sm:px-2 sm:py-1 sm:text-xs 2xl:text-sm 2xl:px-3 2xl:py-1.5",
+      className,
+    )}>
+      <span aria-hidden className="text-xs sm:text-base 2xl:text-lg">{icon}</span>
       <span className={cn('tabular-nums', valueClass ?? color)}>{value.toLocaleString('id-ID')}</span>
     </div>
   )

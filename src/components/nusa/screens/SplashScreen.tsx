@@ -71,11 +71,11 @@ export function SplashScreen() {
               animate={{ y: [0, -8, 0], rotate: [0, -3, 3, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <NovaMascot expression="happy" size={120} />
+              <NovaMascot expression="happy" size={90} />
             </motion.div>
-            <h1 className="mt-2 text-6xl font-black tracking-tight sm:text-7xl md:text-8xl">
+            <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
               <span className="text-gradient-cyan drop-shadow-[0_4px_20px_rgba(34,211,238,0.4)]">NUSA</span>
-              <span className="ml-3 text-gradient-purple drop-shadow-[0_4px_20px_rgba(168,85,247,0.4)]">LEARN</span>
+              <span className="ml-2 text-gradient-purple drop-shadow-[0_4px_20px_rgba(168,85,247,0.4)]">LEARN</span>
             </h1>
           </div>
         </motion.div>
@@ -87,7 +87,7 @@ export function SplashScreen() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="mt-6 text-lg font-medium text-cyan-100/90 sm:text-xl md:text-2xl"
+              className="mt-4 text-sm font-medium text-cyan-100/90 sm:text-lg md:text-xl 2xl:text-2xl"
             >
               Belajar jadi petualangan.
             </motion.p>
@@ -101,9 +101,9 @@ export function SplashScreen() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mt-10 flex flex-col items-center gap-4"
+              className="mt-6 flex flex-col items-center gap-3 sm:mt-10 sm:gap-4"
             >
-              <p className="text-sm text-cyan-100/70 sm:text-base">
+              <p className="text-xs text-cyan-100/70 sm:text-sm md:text-base px-4 text-center">
                 Jelajahi dunia futuristik. Asah numerik & literasi sambil bermain.
               </p>
               <motion.div
@@ -112,7 +112,7 @@ export function SplashScreen() {
               >
                 <GlowButton
                   glow="cyan"
-                  size="xl"
+                  size="lg"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleEnter()
