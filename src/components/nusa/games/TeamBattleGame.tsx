@@ -193,12 +193,12 @@ export function TeamBattleGame({ question, onAnswer, disabled }: TeamBattleGameP
   }
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-2 sm:gap-3">
       <div className="text-center">
-        <div className="text-xs font-bold uppercase tracking-widest text-rose-600 sm:text-sm 2xl:text-base">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-rose-600 sm:text-xs 2xl:text-sm">
           ⚔️ Pertarungan Kelompok · {question.subcategory}
         </div>
-        <h2 className="mt-1 text-lg font-bold text-slate-800 sm:text-xl 2xl:text-3xl">{question.question}</h2>
+        <h2 className="mt-1 text-sm font-bold text-slate-800 sm:text-base md:text-lg 2xl:text-xl">{question.question}</h2>
         {question.story && (
           <p className="mt-2 mx-auto max-w-2xl text-sm sm:text-base 2xl:text-lg bg-purple-50 rounded-xl p-3 text-slate-700">
             📖 {question.story}
@@ -212,7 +212,7 @@ export function TeamBattleGame({ question, onAnswer, disabled }: TeamBattleGameP
       {/* Battle arena */}
       <div
         className="relative w-full overflow-hidden rounded-3xl border-2 border-rose-300 bg-gradient-to-b from-indigo-100 via-purple-50 to-rose-100"
-        style={{ aspectRatio: '16/9', minHeight: '45dvh', maxHeight: '70dvh' }}
+        style={{ height: 'clamp(200px, 40dvh, 500px)' }}
       >
         {/* Team labels (top) */}
         <div className="absolute left-3 right-3 top-3 flex items-center justify-between gap-3 z-20">

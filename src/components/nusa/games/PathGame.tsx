@@ -112,7 +112,7 @@ export function PathGame({ question, onAnswer, disabled }: PathGameProps) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-2 sm:gap-3">
       <div className="text-center">
         <div className="text-xs font-bold uppercase tracking-widest text-emerald-600">
           🚶 Penjelajah Jalur · {question.subcategory}
@@ -124,7 +124,7 @@ export function PathGame({ question, onAnswer, disabled }: PathGameProps) {
       {/* Path area */}
       <div
         className="relative w-full overflow-hidden rounded-3xl border-2 border-emerald-300 bg-gradient-to-b from-emerald-50 via-teal-50 to-sky-100"
-        style={{ aspectRatio: '4/3', minHeight: '50dvh', maxHeight: '75dvh' }}
+        style={{ height: 'clamp(250px, 45dvh, 500px)' }}
       >
         {/* Background mountains/clouds decoration */}
         <div className="pointer-events-none absolute inset-0 opacity-40">
