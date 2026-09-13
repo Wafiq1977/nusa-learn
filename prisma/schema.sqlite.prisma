@@ -34,7 +34,7 @@ model Question {
   explanation String   // why the answer is correct
   hints       String   // JSON array of progressive hints (3 tiers)
   xpReward    Int      @default(20)
-  createdAt   DateTime @default(now)
+  createdAt   DateTime @default(now())
 
   @@index([grade, category, subcategory])
   @@index([category, difficulty])
