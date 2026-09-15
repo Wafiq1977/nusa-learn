@@ -29,6 +29,8 @@ export default function Home() {
   const setView = useGameStore((s) => s.setView)
   const tvMode = useGameStore((s) => s.settings.tvMode)
   const displayMode = useGameStore((s) => s.settings.displayMode)
+  const darkMode = useGameStore((s) => s.settings.darkMode)
+  const textScale = useGameStore((s) => s.settings.textScale)
 
   // Wait for Zustand persist to hydrate from localStorage
   useEffect(() => {
@@ -36,12 +38,16 @@ export default function Home() {
     setHydrated(true)
   }, [])
 
-  // Apply display mode + TV mode + reduce motion globally
+  // Apply display mode + dark mode + text scale + reduce motion globally
   useEffect(() => {
     const s = useGameStore.getState().settings
     const html = document.documentElement
     // Remove all mode classes first
-    html.classList.remove('mode-mobile', 'mode-tablet', 'mode-desktop', 'mode-tv', 'tv-mode', 'reduce-motion')
+    html.classList.remove('mode-mobile', 'mode-tablet', 'mode-desktop', 'mode-tv', 'tv-mode', 'reduce-motion', 'dark', 'text-small', 'text-normal', 'text-large')
+    // Dark mode
+    if (s.darkMode) html.classList.add('dark')
+    // Text scale
+    html.classList.add(`text-${s.textScale}`)
     // Apply selected display mode
     if (s.displayMode === 'mobile') html.classList.add('mode-mobile')
     else if (s.displayMode === 'tablet') html.classList.add('mode-tablet')
@@ -51,7 +57,7 @@ export default function Home() {
     else if (s.tvMode) { html.classList.add('tv-mode'); html.classList.add('mode-tv') }
     // Reduce motion
     if (s.reduceMotion || !s.animations) html.classList.add('reduce-motion')
-  }, [tvMode, displayMode])
+  }, [tvMode, displayMode, darkMode, textScale])
 
   if (!hydrated) {
     return (

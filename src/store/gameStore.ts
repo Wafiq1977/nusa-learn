@@ -47,6 +47,7 @@ export interface Settings {
   textScale: 'small' | 'normal' | 'large'
   tvMode: boolean
   displayMode: DisplayMode
+  darkMode: boolean
 }
 
 export interface GameSession {
@@ -198,6 +199,7 @@ const DEFAULT_SETTINGS: Settings = {
   textScale: 'normal',
   tvMode: false,
   displayMode: 'auto',
+  darkMode: false,
 }
 
 const EMPTY_PLAYER: PlayerState = {

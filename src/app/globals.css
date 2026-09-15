@@ -443,3 +443,69 @@ html.mode-tv .text-\[11px\] { font-size: 0.95rem !important; }
   background: rgba(14, 165, 233, 0.4);
   border-radius: 999px;
 }
+
+/* ============================================================
+   TEXT SCALE — global font size override from Settings
+   ============================================================ */
+html.text-small { font-size: 13px !important; }
+html.text-normal { font-size: 16px !important; }
+html.text-large { font-size: 19px !important; }
+
+/* ============================================================
+   DARK MODE — override colors when .dark class on html
+   ============================================================ */
+html.dark {
+  --background: oklch(0.13 0.03 250);
+  --foreground: oklch(0.97 0.01 240);
+  --card: oklch(0.18 0.03 250 / 80%);
+  --card-foreground: oklch(0.97 0.01 240);
+  --primary: oklch(0.7 0.18 200);
+  --primary-foreground: oklch(0.13 0.03 250);
+  --secondary: oklch(0.25 0.04 250);
+  --secondary-foreground: oklch(0.97 0.01 240);
+  --muted: oklch(0.22 0.03 250);
+  --muted-foreground: oklch(0.7 0.02 240);
+  --accent: oklch(0.3 0.08 290);
+  --accent-foreground: oklch(0.97 0.01 240);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.7 0.18 200);
+}
+html.dark body {
+  background: linear-gradient(180deg, #0B1E3F 0%, #1A1147 50%, #0B1E3F 100%) !important;
+  color: #F1F5F9 !important;
+}
+html.dark .glass {
+  background: rgba(11, 30, 63, 0.55) !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
+}
+html.dark .glass-strong {
+  background: rgba(11, 30, 63, 0.75) !important;
+  border: 1px solid rgba(34, 211, 238, 0.25) !important;
+}
+html.dark .text-slate-700 { color: #CBD5E1 !important; }
+html.dark .text-slate-800 { color: #E2E8F0 !important; }
+html.dark .text-slate-600 { color: #94A3B8 !important; }
+html.dark .text-slate-500 { color: #64748B !important; }
+html.dark .text-slate-400 { color: #475569 !important; }
+html.dark .bg-white\/70 { background: rgba(30, 41, 59, 0.7) !important; }
+html.dark .bg-white\/80 { background: rgba(30, 41, 59, 0.8) !important; }
+html.dark .bg-white\/90 { background: rgba(30, 41, 59, 0.9) !important; }
+html.dark .bg-white { background: rgba(30, 41, 59, 0.9) !important; }
+html.dark .border-slate-200 { border-color: rgba(71, 85, 105, 0.5) !important; }
+html.dark .border-slate-300 { border-color: rgba(100, 116, 139, 0.5) !important; }
+html.dark .bg-slate-200\/70 { background: rgba(51, 65, 85, 0.7) !important; }
+html.dark .bg-slate-100 { background: rgba(51, 65, 85, 0.5) !important; }
+html.dark .bg-slate-200 { background: rgba(51, 65, 85, 0.8) !important; }
+html.dark .bg-cyan-50 { background: rgba(14, 165, 233, 0.1) !important; }
+html.dark .bg-purple-50 { background: rgba(168, 85, 247, 0.1) !important; }
+html.dark .bg-emerald-50 { background: rgba(16, 185, 129, 0.1) !important; }
+html.dark .bg-amber-50 { background: rgba(251, 191, 36, 0.1) !important; }
+html.dark .bg-rose-50 { background: rgba(244, 63, 94, 0.1) !important; }
+html.dark .bg-sky-100 { background: rgba(14, 165, 233, 0.15) !important; }
+html.dark .bg-purple-100 { background: rgba(168, 85, 247, 0.15) !important; }
+html.dark .bg-slate-200\/50 { background: rgba(51, 65, 85, 0.5) !important; }
+html.dark .bg-nusa-sky {
+  background: linear-gradient(180deg, #0B1E3F 0%, #1A1147 50%, #0B1E3F 100%) !important;
+}

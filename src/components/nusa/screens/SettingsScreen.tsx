@@ -8,7 +8,7 @@ import { NovaMascot } from '@/components/nusa/NovaMascot'
 import { playSound, setSoundEnabled } from '@/lib/nusa/sound'
 import { TRACKS, playMusic, stopMusic, unlockAudio, isMusicPlaying, getCurrentTrackId } from '@/lib/nusa/music'
 import { useEffect, useState } from 'react'
-import { Volume2, VolumeX, Music, Music2, Sparkles, Zap, Type, Tv, Smartphone, Tablet, Monitor } from 'lucide-react'
+import { Volume2, VolumeX, Music, Music2, Sparkles, Zap, Type, Tv, Smartphone, Tablet, Monitor, Moon, Sun } from 'lucide-react'
 
 export function SettingsScreen() {
   const settings = useGameStore((s) => s.settings)
@@ -130,6 +130,13 @@ export function SettingsScreen() {
             desc="Untuk perangkat lambat atau sensitif gerakan"
             value={settings.reduceMotion}
             onToggle={(v) => updateSettings({ reduceMotion: v })}
+          />
+          <ToggleRow
+            icon={settings.darkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            label={settings.darkMode ? '🌙 Mode Gelap' : '☀️ Mode Terang'}
+            desc="Beralih antara tema terang dan gelap"
+            value={settings.darkMode}
+            onToggle={(v) => updateSettings({ darkMode: v })}
           />
         </div>
 

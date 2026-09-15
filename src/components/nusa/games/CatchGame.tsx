@@ -119,11 +119,11 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
   // Touch/keyboard controls: move character left/right
   const moveLeft = useCallback(() => {
     if (disabled || result) return
-    setCharX((x) => Math.max(8, x - 12))
+    setCharX((x) => Math.max(5, x - 10))
   }, [disabled, result])
   const moveRight = useCallback(() => {
     if (disabled || result) return
-    setCharX((x) => Math.min(92, x + 12))
+    setCharX((x) => Math.min(95, x + 10))
   }, [disabled, result])
 
   // Keyboard controls
@@ -146,19 +146,19 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
         <p className="mt-0.5 text-[10px] text-slate-500 sm:text-xs">Geser karaktermu untuk menangkap jawaban yang benar!</p>
       </div>
 
-      {/* Play area — flex-1 supaya adaptif, tidak fixed height */}
+      {/* Play area — diperpanjang ke bawah, adaptif */}
       <div
         ref={playAreaRef}
-        className="relative w-full flex-1 overflow-hidden rounded-3xl border-2 border-cyan-300 bg-gradient-to-b from-sky-100 via-cyan-50 to-emerald-100 min-h-[300px] sm:min-h-[400px]"
-        style={{ height: 'clamp(300px, 50dvh, 600px)' }}
+        className="relative w-full flex-1 overflow-hidden rounded-3xl border-2 border-cyan-300 bg-gradient-to-b from-sky-100 via-cyan-50 to-emerald-100 min-h-[350px] sm:min-h-[450px]"
+        style={{ height: 'clamp(350px, 55dvh, 650px)' }}
       >
         {/* Background grid */}
         <div className="pointer-events-none absolute inset-0 opacity-30">
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
               className="absolute left-0 right-0 border-t border-dashed border-cyan-300"
-              style={{ top: `${(i + 1) * 14}%` }}
+              style={{ top: `${(i + 1) * 11}%` }}
             />
           ))}
         </div>
@@ -168,7 +168,7 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
           {tokens.map((tk) => (
             <motion.div
               key={tk.id}
-              className={`absolute flex h-12 w-12 items-center justify-center rounded-2xl text-base font-black shadow-lg sm:h-14 sm:w-14 ${
+              className={`absolute flex h-11 w-11 items-center justify-center rounded-2xl text-sm font-black shadow-lg sm:h-14 sm:w-14 sm:text-base ${
                 tk.isAnswer && result
                   ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-white scale-110'
                   : result === 'wrong' && tk.isAnswer
@@ -178,10 +178,7 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
               style={{
                 left: `${tk.x}%`,
                 top: `${tk.y}%`,
-                transform: 'translate(-50%, -50%)',
               }}
-              animate={{ y: [0, 2, 0] }}
-              transition={{ duration: 0.6, repeat: Infinity }}
               exit={{ scale: 0, opacity: 0 }}
             >
               {tk.value}
@@ -189,26 +186,25 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
           ))}
         </AnimatePresence>
 
-        {/* Character at bottom */}
-        <motion.div
-          className="absolute bottom-2 z-10"
+        {/* Character at bottom — wrapper untuk positioning, inner untuk animasi */}
+        <div
+          className="absolute bottom-3 z-10"
           style={{ left: `${charX}%`, transform: 'translateX(-50%)' }}
-          animate={{ x: 0, y: [0, -3, 0] }}
-          transition={{ duration: 0.4, repeat: Infinity }}
         >
-          <div
+          <motion.div
+            animate={{ y: [0, -3, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             className={`rounded-2xl p-1 ${result === 'correct' ? 'bg-emerald-200' : result === 'wrong' ? 'bg-amber-200' : ''}`}
-            style={{ transition: 'background-color 0.3s' }}
           >
-            <CharacterAvatar char={character} size={64} />
-          </div>
-        </motion.div>
+            <CharacterAvatar char={character} size={60} />
+          </motion.div>
+        </div>
 
         {/* Catch zone indicator */}
         <div
           className="absolute bottom-1 h-3 rounded-full bg-cyan-300/40 transition-all duration-200"
           style={{
-            left: `${charX - 8}%`,
+            left: `${charX - 7}%`,
             width: '16%',
           }}
         />
