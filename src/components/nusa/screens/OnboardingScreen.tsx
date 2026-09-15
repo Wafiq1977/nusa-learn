@@ -83,7 +83,7 @@ export function OnboardingScreen() {
   }
 
   return (
-    <div className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-nusa-deep px-4 py-10 text-white">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-y-auto bg-nusa-deep px-4 py-10 text-white">
       <ParticleBackground variant="splash" />
 
       <div className="relative z-10 w-full max-w-xl">

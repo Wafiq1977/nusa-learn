@@ -114,19 +114,18 @@
   * {
     @apply border-border outline-ring/50;
   }
-  html, body {
+  html {
     min-height: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
-    -webkit-overflow-scrolling: touch;
   }
   body {
     @apply bg-background text-foreground antialiased;
     -webkit-tap-highlight-color: transparent;
-    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+    min-height: 100%;
+    width: 100%;
+    overflow-x: clip;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    width: 100vw;
   }
   button {
     touch-action: manipulation;
@@ -135,7 +134,6 @@
     max-width: 100%;
     height: auto;
   }
-  /* Prevent text selection on UI elements (kids might accidentally select) */
   .no-select {
     -webkit-user-select: none;
     user-select: none;

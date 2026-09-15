@@ -71,7 +71,7 @@ export function GameShell({
   return (
     <div
       className={cn(
-        'relative flex min-h-[100dvh] flex-col',
+        'relative flex min-h-screen flex-col w-full',
         bgVariant === 'deep' && 'bg-nusa-deep text-white',
         bgVariant === 'splash' && 'bg-nusa-deep text-white',
         bgVariant === 'light' && 'bg-nusa-sky',

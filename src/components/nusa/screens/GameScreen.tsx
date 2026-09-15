@@ -576,7 +576,7 @@ export function GameScreen() {
       {/* Question card */}
       <GlassCard
         glow={session.category === 'literasi' ? 'purple' : 'cyan'}
-        className="relative scroll-game p-3 sm:p-5 md:p-6"
+        className="relative p-3 sm:p-5 md:p-6"
       >
         {/* NOVA corner */}
         <div className="absolute -right-2 -top-2 opacity-90">
