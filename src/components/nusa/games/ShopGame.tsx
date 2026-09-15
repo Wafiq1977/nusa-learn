@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '@/store/gameStore'
 import type { Question } from '@/store/gameStore'
 import { playSound } from '@/lib/nusa/sound'
-import { CharacterAvatar } from '@/components/nusa/screens/OnboardingScreen'
+import { HeroCharacterAvatar } from '@/components/nusa/HeroCharacterAvatar'
 
 interface ShopGameProps {
   question: Question
@@ -213,7 +213,7 @@ export function ShopGame({ question, onAnswer, disabled }: ShopGameProps) {
           }
           transition={{ duration: walking ? 0.25 : 1.5, repeat: Infinity }}
         >
-          <CharacterAvatar char={character} size={64} />
+          <HeroCharacterAvatar char={character} size={64} pose="running" />
         </motion.div>
 
         {/* Receipt overlay */}

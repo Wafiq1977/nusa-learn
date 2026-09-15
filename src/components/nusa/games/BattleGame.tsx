@@ -6,6 +6,7 @@ import { useGameStore } from '@/store/gameStore'
 import type { Question } from '@/store/gameStore'
 import { playSound } from '@/lib/nusa/sound'
 import { NovaMascot } from '@/components/nusa/NovaMascot'
+import { HeroCharacterAvatar } from '@/components/nusa/HeroCharacterAvatar'
 
 interface BattleGameProps {
   question: Question
@@ -96,18 +97,22 @@ export function BattleGame({ question, onAnswer, disabled }: BattleGameProps) {
         className="relative w-full overflow-hidden rounded-3xl border-2 border-rose-300 bg-gradient-to-b from-indigo-100 via-purple-50 to-rose-100"
         style={{ height: 'clamp(200px, 35dvh, 400px)' }}
       >
-        {/* Player side (left) */}
+        {/* Player side (left) — Hero Character */}
         <motion.div
-          className={`absolute bottom-3 left-6 ${shake === 'player' && !reduceMotion ? 'animate-shake' : ''}`}
+          className={`absolute bottom-3 left-4 sm:left-8 ${shake === 'player' && !reduceMotion ? 'animate-shake' : ''}`}
           animate={
             attack === 'player' && !reduceMotion
               ? { x: [0, 60, 0], scale: [1, 1.1, 1] }
-              : { y: [0, -2, 0] }
+              : { y: [0, -3, 0] }
           }
           transition={{ duration: attack === 'player' ? 0.5 : 1.5, repeat: attack === 'player' ? 0 : Infinity }}
         >
-          {/* Use a simple character circle as player avatar */}
-          <div className="text-5xl">🦸</div>
+          <HeroCharacterAvatar
+            char={character}
+            size={60}
+            pose={attack === 'player' ? 'celebrating' : 'idle'}
+            float={false}
+          />
           <div className="mt-1 text-center text-[10px] font-bold text-slate-600">KAMU</div>
         </motion.div>
 

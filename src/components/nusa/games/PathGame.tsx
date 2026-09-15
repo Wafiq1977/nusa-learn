@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '@/store/gameStore'
 import type { Question } from '@/store/gameStore'
 import { playSound } from '@/lib/nusa/sound'
-import { CharacterAvatar } from '@/components/nusa/screens/OnboardingScreen'
+import { HeroCharacterAvatar } from '@/components/nusa/HeroCharacterAvatar'
 
 interface PathGameProps {
   question: Question
@@ -207,7 +207,7 @@ export function PathGame({ question, onAnswer, disabled }: PathGameProps) {
           }
           transition={{ duration: walking ? 0.2 : 1.5, repeat: Infinity }}
         >
-          <CharacterAvatar char={character} size={64} />
+          <HeroCharacterAvatar char={character} size={64} pose="running" />
         </motion.div>
 
         {/* Result overlay */}

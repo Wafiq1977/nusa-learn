@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '@/store/gameStore'
 import type { Question } from '@/store/gameStore'
 import { playSound } from '@/lib/nusa/sound'
-import { CharacterAvatar } from '@/components/nusa/screens/OnboardingScreen'
+import { HeroCharacterAvatar } from '@/components/nusa/HeroCharacterAvatar'
 
 interface CatchGameProps {
   question: Question
@@ -120,11 +120,11 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
   // Touch/keyboard controls: move character left/right
   const moveLeft = useCallback(() => {
     if (disabled || result) return
-    setCharX((x) => Math.max(5, x - 10))
+    setCharX((x) => Math.max(10, x - 10))
   }, [disabled, result])
   const moveRight = useCallback(() => {
     if (disabled || result) return
-    setCharX((x) => Math.min(95, x + 10))
+    setCharX((x) => Math.min(90, x + 10))
   }, [disabled, result])
 
   // Keyboard controls
@@ -188,26 +188,25 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
           ))}
         </AnimatePresence>
 
-        {/* Character at bottom — NO transform for positioning, use margin instead */}
+        {/* Character at bottom — calc() positioning, no transform/margin */}
         <div
           className="absolute bottom-3 z-10"
-          style={{ left: `${charX}%`, marginLeft: '-30px' }}
+          style={{ left: `calc(${charX}% - 30px)` }}
         >
           <motion.div
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             className={`rounded-2xl p-1 ${result === 'correct' ? 'bg-emerald-200' : result === 'wrong' ? 'bg-amber-200' : ''}`}
           >
-            <CharacterAvatar char={character} size={60} />
+            <HeroCharacterAvatar char={character} size={56} pose="running" float={false} />
           </motion.div>
         </div>
 
-        {/* Catch zone indicator — pakai margin juga, bukan transform */}
+        {/* Catch zone indicator */}
         <div
           className="absolute bottom-1 h-3 rounded-full bg-cyan-300/40 transition-all duration-200"
           style={{
-            left: `${charX}%`,
-            marginLeft: '-40px',
+            left: `calc(${charX}% - 40px)`,
             width: '80px',
           }}
         />

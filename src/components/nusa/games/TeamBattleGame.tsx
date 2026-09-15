@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '@/store/gameStore'
 import type { Question } from '@/store/gameStore'
 import { playSound } from '@/lib/nusa/sound'
-import { CharacterAvatar } from '@/components/nusa/screens/OnboardingScreen'
+import { HeroCharacterAvatar } from '@/components/nusa/HeroCharacterAvatar'
 
 interface TeamBattleGameProps {
   question: Question
@@ -237,7 +237,7 @@ export function TeamBattleGame({ question, onAnswer, disabled }: TeamBattleGameP
               transition={{ duration: 1.5, repeat: Infinity }}
               className="rounded-2xl bg-rose-100 p-1"
             >
-              <CharacterAvatar char={character} size={72} />
+              <HeroCharacterAvatar char={character} size={72} pose="celebrating" />
             </motion.div>
             <div className="mt-1 rounded-full bg-rose-500 px-3 py-0.5 text-[10px] font-bold text-white sm:text-xs 2xl:text-sm">
               KAMU (TIM MERAH)
