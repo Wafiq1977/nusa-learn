@@ -82,13 +82,14 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
     return () => clearInterval(tick)
   }, [disabled, result, reduceMotion])
 
-  // Detect: when a token reaches the bottom (~90% y), check if character is under it
+  // Detect: when a token reaches the bottom (~88% y), check if character is under it
   useEffect(() => {
     if (result) return
-    const charLeft = charX - 8 // catch zone
-    const charRight = charX + 8
+    // Character center is at charX%, catch zone is ±7% around it
+    const charLeft = charX - 7
+    const charRight = charX + 7
     tokens.forEach((tk) => {
-      if (tk.y >= 85 && tk.y <= 95 && !caught) {
+      if (tk.y >= 83 && tk.y <= 92 && !caught) {
         // Check overlap with character
         if (tk.x >= charLeft && tk.x <= charRight) {
           // Catch!
@@ -163,36 +164,37 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
           ))}
         </div>
 
-        {/* Falling tokens */}
+        {/* Falling tokens — wrapper untuk centering, inner untuk animasi */}
         <AnimatePresence>
           {tokens.map((tk) => (
-            <motion.div
+            <div
               key={tk.id}
-              className={`absolute flex h-11 w-11 items-center justify-center rounded-2xl text-sm font-black shadow-lg sm:h-14 sm:w-14 sm:text-base ${
-                tk.isAnswer && result
-                  ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-white scale-110'
-                  : result === 'wrong' && tk.isAnswer
-                    ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-white'
-                    : 'bg-gradient-to-br from-sky-400 to-cyan-500 text-white'
-              }`}
-              style={{
-                left: `${tk.x}%`,
-                top: `${tk.y}%`,
-              }}
-              exit={{ scale: 0, opacity: 0 }}
+              className="absolute"
+              style={{ left: `${tk.x}%`, top: `${tk.y}%`, marginLeft: '-22px', marginTop: '-22px' }}
             >
-              {tk.value}
-            </motion.div>
+              <motion.div
+                className={`flex h-11 w-11 items-center justify-center rounded-2xl text-sm font-black shadow-lg sm:h-12 sm:w-12 sm:text-base ${
+                  tk.isAnswer && result
+                    ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-white'
+                    : result === 'wrong' && tk.isAnswer
+                      ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-white'
+                      : 'bg-gradient-to-br from-sky-400 to-cyan-500 text-white'
+                }`}
+                exit={{ scale: 0, opacity: 0 }}
+              >
+                {tk.value}
+              </motion.div>
+            </div>
           ))}
         </AnimatePresence>
 
-        {/* Character at bottom — wrapper untuk positioning, inner untuk animasi */}
+        {/* Character at bottom — NO transform for positioning, use margin instead */}
         <div
           className="absolute bottom-3 z-10"
-          style={{ left: `${charX}%`, transform: 'translateX(-50%)' }}
+          style={{ left: `${charX}%`, marginLeft: '-30px' }}
         >
           <motion.div
-            animate={{ y: [0, -3, 0] }}
+            animate={{ y: [0, -4, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             className={`rounded-2xl p-1 ${result === 'correct' ? 'bg-emerald-200' : result === 'wrong' ? 'bg-amber-200' : ''}`}
           >
@@ -200,12 +202,13 @@ export function CatchGame({ question, onAnswer, disabled }: CatchGameProps) {
           </motion.div>
         </div>
 
-        {/* Catch zone indicator */}
+        {/* Catch zone indicator — pakai margin juga, bukan transform */}
         <div
           className="absolute bottom-1 h-3 rounded-full bg-cyan-300/40 transition-all duration-200"
           style={{
-            left: `${charX - 7}%`,
-            width: '16%',
+            left: `${charX}%`,
+            marginLeft: '-40px',
+            width: '80px',
           }}
         />
 
