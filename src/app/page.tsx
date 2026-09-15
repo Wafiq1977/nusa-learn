@@ -28,20 +28,30 @@ export default function Home() {
   const hasPlayer = useGameStore((s) => !!s.name)
   const setView = useGameStore((s) => s.setView)
   const tvMode = useGameStore((s) => s.settings.tvMode)
+  const displayMode = useGameStore((s) => s.settings.displayMode)
 
   // Wait for Zustand persist to hydrate from localStorage
   useEffect(() => {
-    // Use a microtask to ensure client-side hydration
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setHydrated(true)
   }, [])
 
-  // Apply TV mode + reduce motion globally
+  // Apply display mode + TV mode + reduce motion globally
   useEffect(() => {
     const s = useGameStore.getState().settings
-    document.documentElement.classList.toggle('tv-mode', s.tvMode)
-    document.documentElement.classList.toggle('reduce-motion', s.reduceMotion || !s.animations)
-  }, [tvMode])
+    const html = document.documentElement
+    // Remove all mode classes first
+    html.classList.remove('mode-mobile', 'mode-tablet', 'mode-desktop', 'mode-tv', 'tv-mode', 'reduce-motion')
+    // Apply selected display mode
+    if (s.displayMode === 'mobile') html.classList.add('mode-mobile')
+    else if (s.displayMode === 'tablet') html.classList.add('mode-tablet')
+    else if (s.displayMode === 'desktop') html.classList.add('mode-desktop')
+    else if (s.displayMode === 'tv') { html.classList.add('mode-tv'); html.classList.add('tv-mode') }
+    // Auto mode: use tvMode toggle as fallback
+    else if (s.tvMode) { html.classList.add('tv-mode'); html.classList.add('mode-tv') }
+    // Reduce motion
+    if (s.reduceMotion || !s.animations) html.classList.add('reduce-motion')
+  }, [tvMode, displayMode])
 
   if (!hydrated) {
     return (

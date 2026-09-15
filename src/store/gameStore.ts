@@ -36,14 +36,17 @@ export interface Character {
   backpack: 'none' | 'rocket' | 'star' | 'cloud'
 }
 
+export type DisplayMode = 'auto' | 'mobile' | 'tablet' | 'desktop' | 'tv'
+
 export interface Settings {
   sound: boolean
   music: boolean
-  musicTrack: string // 'petualangan' | 'ceria' | 'tenang' | 'misteri' | 'kemenangan' | 'off'
+  musicTrack: string
   animations: boolean
   reduceMotion: boolean
   textScale: 'small' | 'normal' | 'large'
-  tvMode: boolean // large display mode for school TVs / PED
+  tvMode: boolean
+  displayMode: DisplayMode
 }
 
 export interface GameSession {
@@ -194,6 +197,7 @@ const DEFAULT_SETTINGS: Settings = {
   reduceMotion: false,
   textScale: 'normal',
   tvMode: false,
+  displayMode: 'auto',
 }
 
 const EMPTY_PLAYER: PlayerState = {

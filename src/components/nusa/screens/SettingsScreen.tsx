@@ -1,14 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore, type DisplayMode } from '@/store/gameStore'
 import { GlassCard } from '@/components/nusa/GlassCard'
 import { GlowButton } from '@/components/nusa/GlowButton'
 import { NovaMascot } from '@/components/nusa/NovaMascot'
 import { playSound, setSoundEnabled } from '@/lib/nusa/sound'
 import { TRACKS, playMusic, stopMusic, unlockAudio, isMusicPlaying, getCurrentTrackId } from '@/lib/nusa/music'
 import { useEffect, useState } from 'react'
-import { Volume2, VolumeX, Music, Music2, Sparkles, Zap, Type, Tv } from 'lucide-react'
+import { Volume2, VolumeX, Music, Music2, Sparkles, Zap, Type, Tv, Smartphone, Tablet, Monitor } from 'lucide-react'
 
 export function SettingsScreen() {
   const settings = useGameStore((s) => s.settings)
@@ -131,13 +131,47 @@ export function SettingsScreen() {
             value={settings.reduceMotion}
             onToggle={(v) => updateSettings({ reduceMotion: v })}
           />
-          <ToggleRow
-            icon={<Tv className="h-5 w-5" />}
-            label="📺 Mode TV / PED"
-            desc="Tampilan besar untuk proyektor atau layar sekolah. Font & tombol lebih besar."
-            value={settings.tvMode}
-            onToggle={(v) => updateSettings({ tvMode: v, textScale: v ? 'large' : 'normal' })}
-          />
+        </div>
+
+        {/* Display Mode selector */}
+        <div className="mt-4">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-700">
+            <Tv className="h-4 w-4" /> Mode Tampilan
+          </div>
+          <p className="mb-3 text-xs text-slate-500">
+            Pilih mode yang sesuai dengan perangkatmu. Auto akan mendeteksi otomatis.
+          </p>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 2xl:gap-3">
+            {([
+              { value: 'auto', label: 'Auto', icon: <Sparkles className="h-5 w-5" />, desc: 'Deteksi otomatis' },
+              { value: 'mobile', label: 'Mobile', icon: <Smartphone className="h-5 w-5" />, desc: 'HP kecil' },
+              { value: 'tablet', label: 'Tablet', icon: <Tablet className="h-5 w-5" />, desc: 'iPad/Tab' },
+              { value: 'desktop', label: 'Desktop', icon: <Monitor className="h-5 w-5" />, desc: 'Laptop/PC' },
+              { value: 'tv', label: 'TV/PED', icon: <Tv className="h-5 w-5" />, desc: 'Proyektor/TV' },
+            ] as const).map((m) => (
+              <button
+                key={m.value}
+                onClick={() => {
+                  playSound('click')
+                  const dm = m.value as DisplayMode
+                  updateSettings({
+                    displayMode: dm,
+                    tvMode: dm === 'tv',
+                    textScale: dm === 'tv' ? 'large' : dm === 'mobile' ? 'small' : 'normal',
+                  })
+                }}
+                className={`flex flex-col items-center gap-1 rounded-2xl border-2 p-2.5 text-center transition-all sm:p-3 ${
+                  settings.displayMode === m.value
+                    ? 'border-cyan-400 bg-cyan-50 text-cyan-700 shadow-sm'
+                    : 'border-slate-200 bg-white/70 text-slate-600 hover:border-cyan-300'
+                }`}
+              >
+                {m.icon}
+                <div className="text-xs font-bold sm:text-sm">{m.label}</div>
+                <div className="text-[9px] text-slate-500 sm:text-[10px]">{m.desc}</div>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="mt-4">

@@ -594,7 +594,7 @@ function QuestionRow({ item, onEdit, onDelete }: { item: QuestionItem; onEdit: (
   const catBadge = item.category === 'numerik' ? 'bg-cyan-100 text-cyan-700' : 'bg-purple-100 text-purple-700'
 
   return (
-    <GlassCard className="overflow-hidden">
+    <GlassCard className="overflow-visible">
       <div className="flex items-start gap-2 p-3 sm:p-4">
         <div className="flex-1">
           <div className="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-xs">
@@ -752,7 +752,7 @@ function QuestionEditor({ item, token, onClose, onSaved }: { item: QuestionItem 
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-2xl"
       >
-        <GlassCard strong className="my-5 p-5">
+        <GlassCard strong className="my-5 max-h-[85dvh] overflow-y-auto scroll-game p-4 sm:p-5">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-bold text-slate-800 sm:text-xl">
               {isNew ? '➕ Tambah Soal Baru' : '✏️ Edit Soal'}

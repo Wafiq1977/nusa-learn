@@ -266,15 +266,15 @@ export function ArcadeScreen() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-3 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto scroll-game bg-slate-900/40 p-3 backdrop-blur-sm sm:items-center"
           >
             <motion.div
               initial={{ scale: 0.95, y: 12 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-2xl"
+              className="w-full max-w-2xl my-auto"
             >
-              <GlassCard strong className="p-4 sm:p-5">
+              <GlassCard strong className="max-h-[90dvh] overflow-y-auto scroll-game p-3 sm:p-5">
                 {/* Header */}
                 <div className="mb-3 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">

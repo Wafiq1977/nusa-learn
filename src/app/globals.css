@@ -115,7 +115,7 @@
     @apply border-border outline-ring/50;
   }
   html, body {
-    height: 100%;
+    min-height: 100%;
     max-width: 100%;
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
@@ -367,3 +367,81 @@ html.tv-mode .rounded-3xl { border-radius: 2rem; }
 /* HUD pill & tiny text in TV mode */
 html.tv-mode .text-\[10px\] { font-size: 0.85rem !important; }
 html.tv-mode .text-\[11px\] { font-size: 0.95rem !important; }
+
+/* ============================================================
+   DISPLAY MODE — User can manually select layout
+   ============================================================ */
+
+/* Mode Mobile — compact layout, small fonts */
+html.mode-mobile { font-size: 14px; }
+html.mode-mobile .text-xs { font-size: 0.7rem !important; }
+html.mode-mobile .text-sm { font-size: 0.8rem !important; }
+html.mode-mobile .text-base { font-size: 0.9rem !important; }
+html.mode-mobile .text-lg { font-size: 1rem !important; }
+html.mode-mobile .text-xl { font-size: 1.1rem !important; }
+html.mode-mobile .text-2xl { font-size: 1.25rem !important; }
+html.mode-mobile .text-3xl { font-size: 1.5rem !important; }
+html.mode-mobile button { min-height: 40px; }
+
+/* Mode Tablet — medium layout */
+html.mode-tablet { font-size: 16px; }
+html.mode-tablet .text-xs { font-size: 0.8rem !important; }
+html.mode-tablet .text-sm { font-size: 0.9rem !important; }
+html.mode-tablet .text-base { font-size: 1rem !important; }
+html.mode-tablet .text-lg { font-size: 1.15rem !important; }
+html.mode-tablet .text-xl { font-size: 1.3rem !important; }
+html.mode-tablet .text-2xl { font-size: 1.5rem !important; }
+html.mode-tablet .text-3xl { font-size: 1.75rem !important; }
+html.mode-tablet button { min-height: 44px; }
+
+/* Mode Desktop — standard layout */
+html.mode-desktop { font-size: 16px; }
+html.mode-desktop .text-xs { font-size: 0.75rem !important; }
+html.mode-desktop .text-sm { font-size: 0.875rem !important; }
+html.mode-desktop .text-base { font-size: 1rem !important; }
+html.mode-desktop .text-lg { font-size: 1.125rem !important; }
+html.mode-desktop .text-xl { font-size: 1.25rem !important; }
+html.mode-desktop .text-2xl { font-size: 1.5rem !important; }
+html.mode-desktop .text-3xl { font-size: 1.875rem !important; }
+html.mode-desktop button { min-height: 44px; }
+
+/* Mode TV — large layout for projectors/TVs */
+html.mode-tv { font-size: 18px; }
+html.mode-tv .text-xs { font-size: 0.9rem !important; }
+html.mode-tv .text-sm { font-size: 1.1rem !important; }
+html.mode-tv .text-base { font-size: 1.35rem !important; }
+html.mode-tv .text-lg { font-size: 1.6rem !important; }
+html.mode-tv .text-xl { font-size: 1.85rem !important; }
+html.mode-tv .text-2xl { font-size: 2.2rem !important; }
+html.mode-tv .text-3xl { font-size: 2.6rem !important; }
+html.mode-tv .text-4xl { font-size: 3rem !important; }
+html.mode-tv .text-5xl { font-size: 3.8rem !important; }
+html.mode-tv button { min-height: 56px; }
+html.mode-tv .p-3 { padding: 1rem; }
+html.mode-tv .p-4 { padding: 1.5rem; }
+html.mode-tv .p-5 { padding: 2rem; }
+html.mode-tv .p-6 { padding: 2.5rem; }
+html.mode-tv .gap-2 { gap: 0.75rem; }
+html.mode-tv .gap-3 { gap: 1rem; }
+html.mode-tv .gap-4 { gap: 1.5rem; }
+html.mode-tv .rounded-2xl { border-radius: 1.5rem; }
+html.mode-tv .rounded-3xl { border-radius: 2rem; }
+html.mode-tv .text-\[10px\] { font-size: 0.85rem !important; }
+html.mode-tv .text-\[11px\] { font-size: 0.95rem !important; }
+
+/* ============================================================
+   SCROLL UTILITY — ensure all game containers can scroll
+   ============================================================ */
+.scroll-game {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(14, 165, 233, 0.4) transparent;
+}
+.scroll-game::-webkit-scrollbar { width: 6px; height: 6px; }
+.scroll-game::-webkit-scrollbar-track { background: transparent; }
+.scroll-game::-webkit-scrollbar-thumb {
+  background: rgba(14, 165, 233, 0.4);
+  border-radius: 999px;
+}
