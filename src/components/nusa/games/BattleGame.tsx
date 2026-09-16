@@ -20,6 +20,7 @@ interface BattleGameProps {
 const MAX_HP = 3
 
 export function BattleGame({ question, onAnswer, disabled }: BattleGameProps) {
+  const character = useGameStore((s) => s.character)
   const soundOn = useGameStore((s) => s.settings.sound)
   const reduceMotion = useGameStore((s) => s.settings.reduceMotion)
 
